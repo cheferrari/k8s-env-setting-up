@@ -1,31 +1,5 @@
 #!/bin/bash
 # 适用于CentOS7，快速配置k8s机器所需环境
-# 配置 CentOS Base 源，清华大学
-mkdir -p /etc/yum.repos.d/base && mv /etc/yum.repos.d/* /etc/yum.repos.d/base
-curl -fsSL -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
-
-# 配置EPEL源，阿里云epel
-# wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
-curl -fsSL -o /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo
-
-# 配置 docker-ce 源，阿里云
-curl -fsSL -o /etc/yum.repos.d/docker-ce.repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-
-# 配置 kubernetes 源 ，阿里云
-cat <<EOF > /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
-enabled=1
-gpgcheck=1
-repo_gpgcheck=1
-gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
-EOF
-
-
-# 安装一些常用工具
-yum makecache fast
-yum install -y yum-utils lrzsz bash-completion wget net-tools
 
 # 系统及内核配置
 # 关闭Selinux and firewalld
@@ -81,6 +55,35 @@ EOF
 chmod 755 /etc/sysconfig/modules/ipvs.modules
 # 立即加载ipvs相关模块
 bash /etc/sysconfig/modules/ipvs.modules && lsmod |grep "ip_vs"
+
+# 配置 CentOS Base 源，清华大学
+mkdir -p /etc/yum.repos.d/base && mv /etc/yum.repos.d/* /etc/yum.repos.d/base
+curl -fsSL -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+
+# 配置EPEL源，阿里云epel
+# wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+curl -fsSL -o /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo
+
+# 配置 docker-ce 源，阿里云
+curl -fsSL -o /etc/yum.repos.d/docker-ce.repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+# yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
+# 配置 kubernetes 源 ，阿里云
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+EOF
+
+# 生成缓存
+echo "y" | yum makecache fast
+
+# 安装一些常用工具
+yum install -y yum-utils lrzsz bash-completion wget net-tools
 
 # 时间同步，-u参数可以越过防火墙与主机同步
 # yum install -y ntpdate
