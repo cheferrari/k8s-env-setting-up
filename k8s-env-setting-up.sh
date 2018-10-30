@@ -121,6 +121,6 @@ systemctl enable docker && systemctl restart docker
 # Installing kubeadm, kubelet and kubectl
 # 安装指定版本的 kubeadm, 默认 1.12.0 版本
 # yum list kubeadm --showduplicates
-# yum install -y kubelet-1.12.0 kubeadm-1.12.0 kubectl-1.12.0
-yum install -y kubelet-${K8S_VERSION:-1.12.0} kubeadm-${K8S_VERSION:-1.12.0} kubectl-${K8S_VERSION:-1.12.0} --disableexcludes=kubernetes
+# yum install -y kubelet-1.12.0 kubeadm-1.12.0 kubectl-1.12.2
+yum install -y kubelet-${K8S_VERSION:-1.12.2} kubeadm-${K8S_VERSION:-1.12.2} kubectl-${K8S_VERSION:-1.12.2} --disableexcludes=kubernetes
 systemctl enable kubelet && systemctl start kubelet
