@@ -56,7 +56,7 @@ chmod 755 /etc/sysconfig/modules/ipvs.modules
 # 立即加载ipvs相关模块
 bash /etc/sysconfig/modules/ipvs.modules && lsmod |grep "ip_vs"
 
-# 配置 CentOS Base 源，清华大学
+# 配置 CentOS Base 源
 mkdir -p /etc/yum.repos.d/base && mv /etc/yum.repos.d/* /etc/yum.repos.d/base
 curl -fsSL -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
 
