@@ -19,7 +19,7 @@ bash pull-k8s-images.sh
 master节点执行如下命令，替换成自己的k8s版本  
 参考：https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#instructions
 ```
-kubeadm init --kubernetes-version=v1.12.0 --pod-network-cidr=10.244.0.0/16
+kubeadm init --kubernetes-version=v1.13.2 --pod-network-cidr=10.244.0.0/16
 ```
 ### 4 安装网络附件 Flannel
 ```
