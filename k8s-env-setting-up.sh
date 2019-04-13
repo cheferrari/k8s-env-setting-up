@@ -101,16 +101,20 @@ yum install -y yum-utils device-mapper-persistent-data lvm2
 #   docker-ce-17.03.2.ce-1.el7.centos.x86_64 \
 #   docker-ce-selinux-17.03.2.ce-1.el7.centos.noarch
 
-# 本脚本默认安装 docker-ce 版本: 18.06.1.ce
+# 本脚本默认安装 docker-ce 版本: 18.06.2.ce
 # 还可以在命令行 export DOCKER_VERSION=xxx 来安装其他版本 docker 
-yum install -y docker-ce-${DOCKER_VERSION:-18.06.1.ce}
+# https://kubernetes.io/docs/setup/cri/#docker    Version 18.06.2 is recommended
+yum install -y docker-ce-${DOCKER_VERSION:-18.06.2.ce}
 
+# https://kubernetes.io/docs/setup/cri/#cgroup-drivers  
+# kubeadm开始建议使用systemd作为节点的cgroup控制器，因此建议读者参考本文流程配置docker为使用systemd，而非默认的Cgroupfs
 # docker 加速
 mkdir -p /etc/docker
 cat > /etc/docker/daemon.json<<EOF
 {
   "registry-mirrors": ["https://c2t380sl.mirror.swr.myhuaweicloud.com", "https://registry.docker-cn.com", "https://docker.mirrors.ustc.edu.cn", "https://hub-mirror.c.163.com"],
-  "max-concurrent-downloads": 20
+  "max-concurrent-downloads": 20,
+  "exec-opts": ["native.cgroupdriver=systemd"]
 }
 EOF
 systemctl daemon-reload
@@ -119,8 +123,8 @@ systemctl daemon-reload
 systemctl enable docker && systemctl restart docker
 
 # Installing kubeadm, kubelet and kubectl
-# 安装指定版本的 kubeadm, 默认 1.12.0 版本
+# 安装指定版本的 kubeadm, 默认 1.14.1 版本
 # yum list kubeadm --showduplicates
-# yum install -y kubelet-1.13.2 kubeadm-1.13.2 kubectl-1.13.2
-yum install -y kubelet-${K8S_VERSION:-1.13.2} kubeadm-${K8S_VERSION:-1.13.2} kubectl-${K8S_VERSION:-1.13.2} --disableexcludes=kubernetes
+# yum install -y kubelet-1.14.1 kubeadm-1.14.1 kubectl-1.14.1
+yum install -y kubelet-${K8S_VERSION:-1.14.1} kubeadm-${K8S_VERSION:-1.14.1} kubectl-${K8S_VERSION:-1.14.1} --disableexcludes=kubernetes
 systemctl enable kubelet && systemctl start kubelet
