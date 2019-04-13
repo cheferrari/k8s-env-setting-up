@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=v1.13.2
+VERSION=v1.14.1
 # 拉取kubeadm1.13.2初始化所需镜像，mirrorgooglecontainers  https://hub.docker.com/u/anjia0532/，https://github.com/anjia0532/gcr.io_mirror
 # 运行 kubeadm config images list 命令可查看该版本kubeadm 所需那些镜像及版本信息
 # [root@localhost ~]# kubeadm config images list
