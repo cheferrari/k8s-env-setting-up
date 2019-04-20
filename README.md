@@ -3,7 +3,7 @@ k8s-env-setting-up is a shell script to initialize the kubernetes's machine envi
 This script is suitable for centos7.
 ## Usage
 ### 环境准备
-两台centos7.5最小化安装主机  
+两台centos7.5主机，最小化安装  
 设置主机名：
 ```
 hostnamectl set-hostname k8s-node1
