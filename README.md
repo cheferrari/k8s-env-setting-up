@@ -91,5 +91,12 @@ echo "source <(kubectl completion bash)" >> ~/.bashrc
 重新登录即可生效  
 #### 7.2 安装kubens命令
 [kubens and kubectx](https://github.com/ahmetb/kubectx)
+kubens 可以方便的切换 Namespace 
+```
+Example installation steps:
+sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
+sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
+sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
+```
 #### 7.3 kubectl效率提升
 [Kubectl效率提升指北](https://aleiwu.com/post/kubectl-guru/)
