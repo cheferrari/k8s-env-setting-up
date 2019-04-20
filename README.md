@@ -93,10 +93,14 @@ echo "source <(kubectl completion bash)" >> ~/.bashrc
 [kubens and kubectx](https://github.com/ahmetb/kubectx)
 kubens 可以方便的切换 Namespace 
 ```
-Example installation steps:
+# Example installation steps:
 sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
 sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
 sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
+# 配置自动补全
+COMPDIR=$(pkg-config --variable=completionsdir bash-completion)
+ln -sf /opt/kubectx/completion/kubens.bash $COMPDIR/kubens
+ln -sf /opt/kubectx/completion/kubectx.bash $COMPDIR/kubectx
 ```
 #### 7.3 kubectl效率提升
 [Kubectl效率提升指北](https://aleiwu.com/post/kubectl-guru/)
