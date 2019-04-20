@@ -50,6 +50,8 @@ master节点执行如下命令，替换成自己的k8s版本
 参考：https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#instructions
 ```
 kubeadm init --kubernetes-version=v1.14.1 --pod-network-cidr=10.244.0.0/16
+# 如果kube-proxy要启用ipvs模式，则执行如下命令
+# kubeadm init --config=kubeadm-config.yaml
 ```
 根据提示拷贝kubeconfig文件到指定目录
 ```
