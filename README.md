@@ -84,6 +84,7 @@ kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert
 ```
 ### 7 使用小建议
 #### kubectl命令自动补全
+[Kubectl Autocomplete](https://kubernetes.io/docs/reference/kubectl/cheatsheet/ "Kubectl Autocomplete")
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 ```
