@@ -28,7 +28,6 @@ cd k8s-env-setting-up
 # export K8S_VERSION=1.13.2
 bash k8s-env-setting-up.sh
 ```
-执行完此脚本会重启操作系统
 ### 2 下载镜像
 #### 【可选】下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下
 ```
