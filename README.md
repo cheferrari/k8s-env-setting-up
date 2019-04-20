@@ -25,7 +25,7 @@ k8s.gcr.io/pause:3.1
 k8s.gcr.io/etcd:3.3.10
 k8s.gcr.io/coredns:1.3.1
 ```
-#### 替换脚本中镜像tag，下载镜像
+#### 替换脚本中镜像tag，下载镜像（所有节点均执行）
 ```
 bash pull-k8s-images.sh
 ```
@@ -36,6 +36,7 @@ master节点执行如下命令，替换成自己的k8s版本
 kubeadm init --kubernetes-version=v1.14.1 --pod-network-cidr=10.244.0.0/16
 ```
 ### 4 安装网络附件 Flannel
+master节点执行如下命令，安装网络附件addon  
 ```
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
 ```
