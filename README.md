@@ -15,13 +15,13 @@ bash k8s-env-setting-up.sh
 #### 下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下
 ```
 [root@localhost ~]# kubeadm config images list
-k8s.gcr.io/kube-apiserver:v1.13.2
-k8s.gcr.io/kube-controller-manager:v1.13.2
-k8s.gcr.io/kube-scheduler:v1.13.2
-k8s.gcr.io/kube-proxy:v1.13.2
+k8s.gcr.io/kube-apiserver:v1.14.1
+k8s.gcr.io/kube-controller-manager:v1.14.1
+k8s.gcr.io/kube-scheduler:v1.14.1
+k8s.gcr.io/kube-proxy:v1.14.1
 k8s.gcr.io/pause:3.1
-k8s.gcr.io/etcd:3.2.24
-k8s.gcr.io/coredns:1.2.6
+k8s.gcr.io/etcd:3.3.10
+k8s.gcr.io/coredns:1.3.1
 ```
 #### 下载镜像
 ```
@@ -31,7 +31,7 @@ bash pull-k8s-images.sh
 master节点执行如下命令，替换成自己的k8s版本  
 参考：https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#instructions
 ```
-kubeadm init --kubernetes-version=v1.13.2 --pod-network-cidr=10.244.0.0/16
+kubeadm init --kubernetes-version=v1.14.1 --pod-network-cidr=10.244.0.0/16
 ```
 ### 4 安装网络附件 Flannel
 ```
