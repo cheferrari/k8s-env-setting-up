@@ -9,7 +9,7 @@ This script is suitable for centos7.
 hostnamectl set-hostname k8s-node1
 hostnamectl set-hostname k8s-node2
 ```
-设置的主机名保存在 /etc/hostname 文件中；
+设置的主机名保存在 /etc/hostname 文件中  
 【可选】如果 DNS 不支持解析主机名称，则修改每台机器的 /etc/hosts 文件，添加主机名和 IP 的对应关系：
 ```
 cat >> /etc/hosts <<EOF
