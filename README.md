@@ -106,3 +106,5 @@ ln -sf /opt/kubectx/completion/kubectx.bash $COMPDIR/kubectx
 ```
 #### 7.3 kubectl效率提升
 [Kubectl效率提升指北](https://aleiwu.com/post/kubectl-guru/)
+#### 7.4 kubeadm-ha
+[kubeadm-ha](https://github.com/lentil1016/kubeadm-ha "kubeadm-ha")
