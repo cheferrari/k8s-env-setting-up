@@ -63,7 +63,7 @@ kubeadm join 192.168.75.165:6443 --token e0bj9u.x0083tvpogchq5bt \
 ### 4 安装网络附件 Flannel
 master节点执行如下命令，安装网络附件addon  
 ```
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
 ```
 ### 5 worker node加入集群
 ```
