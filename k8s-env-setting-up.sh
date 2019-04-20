@@ -128,6 +128,3 @@ systemctl enable docker && systemctl restart docker
 # yum install -y kubelet-1.14.1 kubeadm-1.14.1 kubectl-1.14.1
 yum install -y kubelet-${K8S_VERSION:-1.14.1} kubeadm-${K8S_VERSION:-1.14.1} kubectl-${K8S_VERSION:-1.14.1} --disableexcludes=kubernetes
 systemctl enable kubelet && systemctl start kubelet
-
-# 系统重启，否则ipvs不生效
-reboot
