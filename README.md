@@ -87,5 +87,6 @@ kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 ```
-重新登录即可生效
+重新登录即可生效  
 2.安装kubens命令
+[kubens](https://github.com/ahmetb/kubectx)
