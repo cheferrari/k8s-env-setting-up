@@ -112,7 +112,7 @@ yum install -y docker-ce-${DOCKER_VERSION:-18.06.2.ce}
 mkdir -p /etc/docker
 cat > /etc/docker/daemon.json<<EOF
 {
-  "registry-mirrors": ["https://c2t380sl.mirror.swr.myhuaweicloud.com", "https://registry.docker-cn.com", "https://docker.mirrors.ustc.edu.cn", "https://hub-mirror.c.163.com"],
+  "registry-mirrors": ["https://registry.docker-cn.com", "https://docker.mirrors.ustc.edu.cn", "https://hub-mirror.c.163.com", "https://c2t380sl.mirror.swr.myhuaweicloud.com"],
   "max-concurrent-downloads": 20,
   "exec-opts": ["native.cgroupdriver=systemd"]
 }
