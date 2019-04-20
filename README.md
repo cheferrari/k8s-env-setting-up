@@ -6,6 +6,8 @@ This script is suitable for centos7.
 ```
 git clone https://github.com/cheferrari/k8s-env-setting-up.git
 cd k8s-env-setting-up
+# 默认安装 docker-ce 版本: 18.06.2.ce
+# 默认安装 k8s 版本: v1.14.1
 # 若要安装指定版本的docker或k8s，则
 # export DOCKER_VERSION=18.06.1.ce
 # export K8S_VERSION=1.13.2
@@ -23,7 +25,7 @@ k8s.gcr.io/pause:3.1
 k8s.gcr.io/etcd:3.3.10
 k8s.gcr.io/coredns:1.3.1
 ```
-#### 下载镜像
+#### 替换脚本中镜像tag，下载镜像
 ```
 bash pull-k8s-images.sh
 ```
