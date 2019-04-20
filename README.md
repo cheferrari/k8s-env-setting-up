@@ -10,7 +10,7 @@ hostnamectl set-hostname k8s-node1
 hostnamectl set-hostname k8s-node2
 ```
 设置的主机名保存在 /etc/hostname 文件中；
-如果 DNS 不支持解析主机名称，则需要修改每台机器的 /etc/hosts 文件，添加主机名和 IP 的对应关系：
+【可选】如果 DNS 不支持解析主机名称，则修改每台机器的 /etc/hosts 文件，添加主机名和 IP 的对应关系：
 ```
 cat >> /etc/hosts <<EOF
 192.168.75.165 k8s-node1
@@ -30,7 +30,7 @@ bash k8s-env-setting-up.sh
 ```
 执行完此脚本会重启操作系统
 ### 2 下载镜像
-#### [可选]下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下
+#### 【可选】下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下
 ```
 [root@localhost ~]# kubeadm config images list
 k8s.gcr.io/kube-apiserver:v1.14.1
@@ -41,7 +41,7 @@ k8s.gcr.io/pause:3.1
 k8s.gcr.io/etcd:3.3.10
 k8s.gcr.io/coredns:1.3.1
 ```
-#### [替换脚本中镜像tag]下载镜像（所有节点均执行）
+#### 【替换脚本中镜像tag】下载镜像（所有节点均执行）
 ```
 bash pull-k8s-images.sh
 ```
