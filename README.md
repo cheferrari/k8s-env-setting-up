@@ -36,6 +36,23 @@ master节点执行如下命令，替换成自己的k8s版本
 ```
 kubeadm init --kubernetes-version=v1.14.1 --pod-network-cidr=10.244.0.0/16
 ```
+根据提示拷贝kubeconfig文件到指定目录
+```
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+记录加入集群的命令
+```
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.75.165:6443 --token e0bj9u.x0083tvpogchq5bt \
+    --discovery-token-ca-cert-hash sha256:5f744ed3b7e63cbcffa4a71bfacd90143fd7f371ee5d82aba77205514b33721c
+```
 ### 4 安装网络附件 Flannel
 master节点执行如下命令，安装网络附件addon  
 ```
