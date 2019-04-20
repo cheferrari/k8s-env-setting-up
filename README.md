@@ -73,7 +73,12 @@ master节点执行如下命令，安装网络附件addon
 ```
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
 ```
-### 5 worker node加入集群
+### 5 master节点可调度pod
+```
+kubectl taint nodes --all node-role.kubernetes.io/master-
+```
+This will remove the node-role.kubernetes.io/master taint from any nodes that have it, including the master node, meaning that the scheduler will then be able to schedule pods everywhere
+### 6 worker node加入集群
 ```
 kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>
 ```
