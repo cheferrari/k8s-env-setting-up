@@ -130,4 +130,4 @@ yum install -y kubelet-${K8S_VERSION:-1.14.1} kubeadm-${K8S_VERSION:-1.14.1} kub
 systemctl enable kubelet && systemctl start kubelet
 
 # 系统重启，否则ipvs不生效
-
+reboot
