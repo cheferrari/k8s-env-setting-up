@@ -4,10 +4,18 @@ This script is suitable for centos7.
 ## Usage
 ### 环境准备
 两台centos7.5主机，最小化安装  
-设置主机名：
+设置主机名，重新登录即可
 ```
 hostnamectl set-hostname k8s-node1
 hostnamectl set-hostname k8s-node2
+```
+设置的主机名保存在 /etc/hostname 文件中；
+如果 DNS 不支持解析主机名称，则需要修改每台机器的 /etc/hosts 文件，添加主机名和 IP 的对应关系：
+```
+cat >> /etc/hosts <<EOF
+192.168.75.165 k8s-node1
+192.168.75.166 k8s-node2
+EOF
 ```
 ### 1 初始化系统环境
 ```
