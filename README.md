@@ -40,7 +40,7 @@ master节点执行如下命令，安装网络附件addon
 ```
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
 ```
-### 5 node加入集群
+### 5 worker node加入集群
 ```
 kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>
 ```
