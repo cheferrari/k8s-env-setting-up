@@ -1,5 +1,5 @@
 #!/bin/bash
-# 适用于CentOS7，快速配置k8s机器所需环境
+# 适用于CentOS7及以上，快速配置k8s机器所需环境
 
 # 系统及内核配置
 # 关闭Selinux and firewalld
