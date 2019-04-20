@@ -83,13 +83,13 @@ This will remove the node-role.kubernetes.io/master taint from any nodes that ha
 kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>
 ```
 ### 7 使用小建议
-#### kubectl命令自动补全
+#### 7.1 kubectl命令自动补全
 [Kubectl Autocomplete](https://kubernetes.io/docs/reference/kubectl/cheatsheet/ "Kubectl Autocomplete")
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 ```
 重新登录即可生效  
-#### 安装kubens命令
+#### 7.2 安装kubens命令
 [kubens and kubectx](https://github.com/ahmetb/kubectx)
-#### kubectl效率提升
+#### 7.3 kubectl效率提升
 [Kubectl效率提升指北](https://aleiwu.com/post/kubectl-guru/)
