@@ -14,7 +14,7 @@ cd k8s-env-setting-up
 bash k8s-env-setting-up.sh
 ```
 ### 2 下载镜像
-#### 下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下
+#### [可选]下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下
 ```
 [root@localhost ~]# kubeadm config images list
 k8s.gcr.io/kube-apiserver:v1.14.1
@@ -25,7 +25,7 @@ k8s.gcr.io/pause:3.1
 k8s.gcr.io/etcd:3.3.10
 k8s.gcr.io/coredns:1.3.1
 ```
-#### 替换脚本中镜像tag，下载镜像（所有节点均执行）
+#### [替换脚本中镜像tag]下载镜像（所有节点均执行）
 ```
 bash pull-k8s-images.sh
 ```
