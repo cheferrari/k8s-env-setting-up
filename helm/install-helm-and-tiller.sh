@@ -4,6 +4,7 @@
 # https://feisky.xyz/kubernetes-handbook/appendix/mirrors.html
 # http://mirror.azure.cn/kubernetes/helm/
 # http://mirror.azure.cn/help/gcr-proxy-cache.html
+# docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:<tag>
 #############################
 
 HELM_VERSION=v2.13.1
