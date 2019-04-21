@@ -17,3 +17,8 @@ Server: &version.Version{SemVer:"v2.13.1", GitCommit:"618447cbf203d147601b4b9bd7
 helm repo add stable http://mirror.azure.cn/kubernetes/charts/
 helm repo add incubator http://mirror.azure.cn/kubernetes/charts-incubator/
 ```
+## 4. helm autocompletion
+```
+echo "source <(helm completion bash)" >> ~/.bashrc
+source ~/.bashrc
+```
