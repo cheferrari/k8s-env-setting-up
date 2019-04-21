@@ -74,7 +74,7 @@ master节点执行如下命令，安装网络附件addon
 ```
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
 ```
-### 5 master节点可调度pod
+### 5 master节点可调度pod【可选】
 ```
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
