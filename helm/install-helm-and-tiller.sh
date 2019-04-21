@@ -12,5 +12,3 @@ echo "INSTALL TILLER ${TILLER_VERSION} ..."
 docker pull gcr.azk8s.cn/kubernetes-helm/tiller:${TILLER_VERSION}
 helm init --service-account tiller \
 --tiller-image gcr.azk8s.cn/kubernetes-helm/tiller:${TILLER_VERSION}
-
-helm version
