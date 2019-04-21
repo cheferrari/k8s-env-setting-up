@@ -88,8 +88,15 @@ kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert
 [Kubectl Autocomplete](https://kubernetes.io/docs/reference/kubectl/cheatsheet/ "Kubectl Autocomplete")
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
+# 立即生效
+source .bashrc 
 ```
-重新登录即可生效  
+```
+# kubeadm自动补全
+echo "source <(kube completion bash)" >> ~/.bashrc
+# 立即生效
+source .bashrc
+```
 #### 7.2 安装kubens命令
 [kubens and kubectx](https://github.com/ahmetb/kubectx)
 kubens 可以方便的切换 Namespace 
