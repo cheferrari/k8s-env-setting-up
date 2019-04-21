@@ -93,7 +93,7 @@ source .bashrc
 ```
 ```
 # kubeadm自动补全
-echo "source <(kube completion bash)" >> ~/.bashrc
+echo "source <(kubeadm completion bash)" >> ~/.bashrc
 # 立即生效
 source .bashrc
 ```
