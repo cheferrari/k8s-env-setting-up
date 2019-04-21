@@ -13,7 +13,7 @@ Client: &version.Version{SemVer:"v2.13.1", GitCommit:"618447cbf203d147601b4b9bd7
 Server: &version.Version{SemVer:"v2.13.1", GitCommit:"618447cbf203d147601b4b9bd7f8c37a5d39fbb4", GitTreeState:"clean"}
 ```
 ## 3. add chart repository
-``
+```
 helm repo add stable http://mirror.azure.cn/kubernetes/charts/
 helm repo add incubator http://mirror.azure.cn/kubernetes/charts-incubator/
 ```
