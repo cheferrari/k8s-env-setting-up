@@ -1,4 +1,11 @@
 #!/bin/bash
+
+#############################
+# https://feisky.xyz/kubernetes-handbook/appendix/mirrors.html
+# http://mirror.azure.cn/kubernetes/helm/
+# http://mirror.azure.cn/help/gcr-proxy-cache.html
+#############################
+
 HELM_VERSION=v2.13.1
 TILLER_VERSION=v2.13.1
 echo "INSTALL HELM ${HELM_VERSION} ..."
