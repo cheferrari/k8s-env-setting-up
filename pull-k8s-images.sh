@@ -4,6 +4,7 @@ VERSION=${K8S_VERSION:-v1.14.1}
 # 1. mirrorgooglecontainers  https://hub.docker.com/u/mirrorgooglecontainers  无coredns镜像
 # 2. https://hub.docker.com/u/anjia0532/，https://github.com/anjia0532/gcr.io_mirror 最近没有更新
 # 3. Azure Mirrors中国  http://mirror.azure.cn/help/gcr-proxy-cache.html  docker pull gcr.azk8s.cn/google_containers/kube-apiserver:v1.14.1
+# 4. aliyun docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.14.1
 # 运行 kubeadm config images list 命令可查看该版本kubeadm 所需那些镜像及版本信息
 # [root@localhost ~]# kubeadm config images list
 # k8s.gcr.io/kube-apiserver:v1.13.2
