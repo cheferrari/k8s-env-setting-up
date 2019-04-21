@@ -11,7 +11,7 @@ TILLER_VERSION=v2.13.1
 echo "INSTALL HELM ${HELM_VERSION} ..."
 curl -fsSL -o /opt/helm-${HELM_VERSION}-linux-amd64.tar.gz http://mirror.azure.cn/kubernetes/helm/helm-${HELM_VERSION}-linux-amd64.tar.gz
 mkdir -p /opt/helm
-tar zxvf /opt/helm-v2.13.1-linux-amd64.tar.gz -C /opt/helm
+tar zxvf /opt/helm-${HELM_VERSION}-linux-amd64.tar.gz -C /opt/helm
 cp /opt/helm/linux-amd64/helm /usr/local/bin/
 
 echo "INSTALL TILLER ${TILLER_VERSION} ..."
