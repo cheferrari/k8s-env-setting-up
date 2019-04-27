@@ -9,7 +9,7 @@ This script is suitable for centos7.
 - kube-proxy mode: ipvs (可选)
 - coredns 1.3.1
 - etcd 3.3.10
-- helm & tiller：v2.13.1
+- helm & tiller：[v2.13.1](https://github.com/cheferrari/k8s-env-setting-up/tree/master/helm)
 - ingress: [traefik](https://github.com/cheferrari/k8s-ingress-controller-demo/tree/master/Traefik)
 ## Usage
 ### 环境准备
