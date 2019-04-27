@@ -55,7 +55,6 @@ k8s.gcr.io/coredns:1.3.1
 bash pull-k8s-images.sh
 ```
 ### 3 kubeadm 初始化 k8s 集群
-[The network must be deployed before any applications. Also, CoreDNS will not start up before a network is installed. kubeadm only supports Container Network Interface (CNI) based networks (and does not support kubenet)](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network)
 master节点执行如下命令，替换成自己的k8s版本  
 参考：https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#instructions
 ```
@@ -81,6 +80,7 @@ kubeadm join 192.168.75.165:6443 --token e0bj9u.x0083tvpogchq5bt \
     --discovery-token-ca-cert-hash sha256:5f744ed3b7e63cbcffa4a71bfacd90143fd7f371ee5d82aba77205514b33721c
 ```
 ### 4 安装网络附件 Flannel
+[The network must be deployed before any applications. Also, CoreDNS will not start up before a network is installed. kubeadm only supports Container Network Interface (CNI) based networks (and does not support kubenet)](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network)
 master节点执行如下命令，安装网络附件addon  
 ```
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
