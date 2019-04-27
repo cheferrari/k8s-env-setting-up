@@ -10,7 +10,7 @@ This script is suitable for centos7.
 - coredns 1.3.1
 - etcd 3.3.10
 - helm & tiller：v2.13.1
-- traefik: [installation guide](https://github.com/cheferrari/k8s-ingress-controller-demo/tree/master/Traefik)
+- ingress: [traefik](https://github.com/cheferrari/k8s-ingress-controller-demo/tree/master/Traefik)
 ## Usage
 ### 环境准备
 两台centos7.5主机，最小化安装  
