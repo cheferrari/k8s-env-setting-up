@@ -1,7 +1,11 @@
 # k8s-env-setting-up
 ![language](https://img.shields.io/badge/language-shell-orange.svg)  
 k8s-env-setting-up is a shell script to initialize the kubernetes's machine environment.
-This script is suitable for centos7.
+This script is suitable for centos7.  
+- kubernetes v1.14.1
+- docker-ce 18.06.2
+- flannel v0.11.0(可选)
+- ipvs (可选)
 ## Usage
 ### 环境准备
 两台centos7.5主机，最小化安装  
