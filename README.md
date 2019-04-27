@@ -55,6 +55,7 @@ k8s.gcr.io/coredns:1.3.1
 bash pull-k8s-images.sh
 ```
 ### 3 kubeadm 初始化 k8s 集群
+[The network must be deployed before any applications. Also, CoreDNS will not start up before a network is installed. kubeadm only supports Container Network Interface (CNI) based networks (and does not support kubenet)](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network)
 master节点执行如下命令，替换成自己的k8s版本  
 参考：https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#instructions
 ```
