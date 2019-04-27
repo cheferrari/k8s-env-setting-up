@@ -7,7 +7,10 @@ This script is suitable for centos7.
 - docker-ce 18.06.2
 - network add-on: flannel v0.11.0(可选)
 - kube-proxy mode: ipvs (可选)
+- coredns 1.3.1
+- etcd 3.3.10
 - helm & tiller：v2.13.1
+- traefik: [installation guide](https://github.com/cheferrari/k8s-ingress-controller-demo/tree/master/Traefik)
 ## Usage
 ### 环境准备
 两台centos7.5主机，最小化安装  
