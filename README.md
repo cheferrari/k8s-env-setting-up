@@ -10,7 +10,7 @@ This script is suitable for centos7.
 - coredns 1.3.1
 - etcd 3.3.10
 - helm & tiller：[v2.13.1](https://github.com/cheferrari/k8s-env-setting-up/tree/master/helm)
-- ingress: [traefik](https://github.com/cheferrari/k8s-ingress-controller-demo/tree/master/Traefik)
+- ingress: [traefik](https://github.com/cheferrari/k8s-env-setting-up/tree/master/traefik)
 
 # Table of Contents
 - [Overview](#overview)
@@ -26,11 +26,12 @@ This script is suitable for centos7.
   - [5 master节点可调度pod【可选】](#5-master节点可调度pod可选)
   - [6 worker node加入集群](#6-worker-node加入集群)
   - [7 Install helm and tiller](#7-install-helm-and-tiller)
-  - [8 使用小建议](#8-使用小建议)
-    - [8.1 kubectl命令自动补全](#81-kubectl命令自动补全)
-    - [8.2 安装kubens命令](#82-安装kubens命令)
-    - [8.3 kubectl效率提升](#83-kubectl效率提升)
-    - [8.4 kubeadm-ha](#84-kubeadm-ha)
+  - [8 Install Traefik](#8-install-traefik)
+  - [9 使用小建议](#8-使用小建议)
+    - [9.1 kubectl命令自动补全](#91-kubectl命令自动补全)
+    - [9.2 安装kubens命令](#92-安装kubens命令)
+    - [9.3 kubectl效率提升](#93-kubectl效率提升)
+    - [9.4 kubeadm-ha](#94-kubeadm-ha)
 
 # Usage
 ## 环境准备
@@ -117,8 +118,12 @@ kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert
 ```
 ## 7 Install helm and tiller
 See the [installation guide](https://github.com/cheferrari/k8s-env-setting-up/tree/master/helm) for more information.
-## 8 使用小建议
-### 8.1 kubectl命令自动补全
+
+## 8 Install Traefik
+See the [installation guide](https://github.com/cheferrari/k8s-env-setting-up/tree/master/traefik) for more information.
+
+## 9 使用小建议
+### 9.1 kubectl命令自动补全
 [Kubectl Autocomplete](https://kubernetes.io/docs/reference/kubectl/cheatsheet/ "Kubectl Autocomplete")
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
@@ -131,7 +136,7 @@ echo "source <(kubeadm completion bash)" >> ~/.bashrc
 # 立即生效
 source .bashrc
 ```
-### 8.2 安装kubens命令
+### 9.2 安装kubens命令
 [kubens and kubectx](https://github.com/ahmetb/kubectx)
 kubens 可以方便的切换 Namespace 
 ```
@@ -144,7 +149,7 @@ COMPDIR=$(pkg-config --variable=completionsdir bash-completion)
 ln -sf /opt/kubectx/completion/kubens.bash $COMPDIR/kubens
 ln -sf /opt/kubectx/completion/kubectx.bash $COMPDIR/kubectx
 ```
-### 8.3 kubectl效率提升
+### 9.3 kubectl效率提升
 [Kubectl效率提升指北](https://aleiwu.com/post/kubectl-guru/)
-### 8.4 kubeadm-ha
+### 9.4 kubeadm-ha
 [kubeadm-ha](https://github.com/lentil1016/kubeadm-ha "kubeadm-ha")
