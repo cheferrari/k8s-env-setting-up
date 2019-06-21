@@ -144,7 +144,7 @@ total 28
 ```
 ### 修改metrics-server-deployment.yaml 
 - imagePullPolicy: IfNotPresent
-- 
+- 增加两个命令参数
 ```
 # cat metrics-server-deployment.yaml
 ...
