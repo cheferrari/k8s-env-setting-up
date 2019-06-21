@@ -158,7 +158,7 @@ total 28
 ```
 ### metrics-server参数介绍
 - --kubelet-insecure-tls: skip verifying Kubelet CA certificates. Not recommended for production usage, but can be useful in test clusters with self-signed Kubelet serving certificates
-- --kubelet-insecure-tls: skip verifying Kubelet CA certificates. Not recommended for production usage, but can be useful in test clusters with self-signed Kubelet serving certificates
+- --kubelet-preferred-address-types: the order in which to consider different Kubelet node address types when connecting to Kubelet. Functions similarly to the flag of the same name on the API server.
 - --kubelet-insecure-tls: Do not verify CA of serving certificates presented by Kubelets.  For testing purposes only.
 - --kubelet-preferred-address-types strings: The priority of node address types to use when determining which address to use to connect to a particular node (default [Hostname,InternalDNS,InternalIP,ExternalDNS,ExternalIP])
 
@@ -199,7 +199,7 @@ docker tag gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.3 k8s.gcr.io
 ```
 kubectl apply -f 1.8+/
 ```
-部署完成后过几分钟检查,出现API中出现 metrics.k8s.io/v1beta1, kubectl top命令可以正确输出
+部署完成后过几分钟检查, API版本中出现 metrics.k8s.io/v1beta1, kubectl top命令可以正确输出即表明部署成功
 ```
 # kubectl api-versions
 metrics.k8s.io/v1beta1
