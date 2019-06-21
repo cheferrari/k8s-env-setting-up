@@ -27,11 +27,16 @@ This script is suitable for centos7.
   - [6 worker node加入集群](#6-worker-node加入集群)
   - [7 Install helm and tiller](#7-install-helm-and-tiller)
   - [8 Install Traefik](#8-install-traefik)
-  - [9 使用小建议](#8-使用小建议)
-    - [9.1 kubectl命令自动补全](#91-kubectl命令自动补全)
-    - [9.2 安装kubens命令](#92-安装kubens命令)
-    - [9.3 kubectl效率提升](#93-kubectl效率提升)
-    - [9.4 kubeadm-ha](#94-kubeadm-ha)
+  - [9 Install metrics-server](#9-install-metrics-server)
+    - [修改metrics-server-deployment.yaml](#修改metrics-server-deploymentyaml)
+    - [metrics-server参数介绍](#metrics-server参数介绍)
+    - [拉镜像](#拉镜像)
+    - [部署metrics-server](#部署metrics-server)
+  - [10 使用小建议](#10-使用小建议)
+    - [10.1 kubectl命令自动补全](#101-kubectl命令自动补全)
+    - [10.2 安装kubens命令](#102-安装kubens命令)
+    - [10.3 kubectl效率提升](#103-kubectl效率提升)
+    - [10.4 kubeadm-ha](#104-kubeadm-ha)
 
 # Usage
 ## 环境准备
@@ -122,8 +127,90 @@ See the [installation guide](https://github.com/cheferrari/k8s-env-setting-up/tr
 ## 8 Install Traefik
 See the [installation guide](https://github.com/cheferrari/k8s-env-setting-up/tree/master/traefik) for more information.
 
-## 9 使用小建议
-### 9.1 kubectl命令自动补全
+## 9 Install metrics-server
+```
+git clone https://github.com/kubernetes-incubator/metrics-server
+cd metrics-server/metrics-server/deploy/1.8+
+
+[root@k8s-node1 ~/metrics-server/deploy/1.8+]# ll
+total 28
+-rw-r--r-- 1 root root 384 Jun 21 10:35 aggregated-metrics-reader.yaml
+-rw-r--r-- 1 root root 308 Jun 21 10:35 auth-delegator.yaml
+-rw-r--r-- 1 root root 329 Jun 21 10:35 auth-reader.yaml
+-rw-r--r-- 1 root root 298 Jun 21 10:35 metrics-apiservice.yaml
+-rw-r--r-- 1 root root 991 Jun 21 10:41 metrics-server-deployment.yaml
+-rw-r--r-- 1 root root 291 Jun 21 10:35 metrics-server-service.yaml
+-rw-r--r-- 1 root root 502 Jun 21 10:35 resource-reader.yaml
+```
+### 修改metrics-server-deployment.yaml 
+- imagePullPolicy: IfNotPresent
+- 
+```
+# cat metrics-server-deployment.yaml
+...
+      - name: metrics-server
+        image: k8s.gcr.io/metrics-server-amd64:v0.3.3
+        imagePullPolicy: IfNotPresent
+        args:
+        - --kubelet-insecure-tls
+        - --kubelet-preferred-address-types=InternalIP,Hostname,InternalDNS,ExternalDNS,ExternalIP
+...
+```
+### metrics-server参数介绍
+- --kubelet-insecure-tls: skip verifying Kubelet CA certificates. Not recommended for production usage, but can be useful in test clusters with self-signed Kubelet serving certificates
+- --kubelet-insecure-tls: skip verifying Kubelet CA certificates. Not recommended for production usage, but can be useful in test clusters with self-signed Kubelet serving certificates
+- --kubelet-insecure-tls: Do not verify CA of serving certificates presented by Kubelets.  For testing purposes only.
+- --kubelet-preferred-address-types strings: The priority of node address types to use when determining which address to use to connect to a particular node (default [Hostname,InternalDNS,InternalIP,ExternalDNS,ExternalIP])
+
+metrics-server默认使用coredns作为解析，但是coredns不提供node的解析，因此需要设置--kubelet-preferred-address-types参数  
+或者在cordns的配置文件中加上主机名的解析，如下：
+```
+[root@k8s-node1 metrics-server]# kubectl edit cm coredns 
+
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health
+        hosts {
+           192.168.75.163 k8s-node1
+           192.168.75.164 k8s-node2
+           fallthrough
+        }
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+           pods insecure
+           upstream
+           fallthrough in-addr.arpa ip6.arpa
+        }
+```
+
+### 拉镜像
+```
+docker pull gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.3
+docker tag gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.3 k8s.gcr.io/metrics-server-amd64:v0.3.3
+```
+
+### 部署metrics-server
+```
+kubectl apply -f 1.8+/
+```
+部署完成后过几分钟检查,出现API中出现 metrics.k8s.io/v1beta1, kubectl top命令可以正确输出
+```
+# kubectl api-versions
+metrics.k8s.io/v1beta1
+
+# kubectl top node
+NAME        CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+k8s-node1   238m         5%     806Mi           21%
+```
+
+## 10 使用小建议
+### 10.1 kubectl命令自动补全
 [Kubectl Autocomplete](https://kubernetes.io/docs/reference/kubectl/cheatsheet/ "Kubectl Autocomplete")
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
@@ -136,7 +223,7 @@ echo "source <(kubeadm completion bash)" >> ~/.bashrc
 # 立即生效
 source .bashrc
 ```
-### 9.2 安装kubens命令
+### 10.2 安装kubens命令
 [kubens and kubectx](https://github.com/ahmetb/kubectx)
 kubens 可以方便的切换 Namespace 
 ```
@@ -149,7 +236,7 @@ COMPDIR=$(pkg-config --variable=completionsdir bash-completion)
 ln -sf /opt/kubectx/completion/kubens.bash $COMPDIR/kubens
 ln -sf /opt/kubectx/completion/kubectx.bash $COMPDIR/kubectx
 ```
-### 9.3 kubectl效率提升
+### 10.3 kubectl效率提升
 [Kubectl效率提升指北](https://aleiwu.com/post/kubectl-guru/)
-### 9.4 kubeadm-ha
+### 10.4 kubeadm-ha
 [kubeadm-ha](https://github.com/lentil1016/kubeadm-ha "kubeadm-ha")
