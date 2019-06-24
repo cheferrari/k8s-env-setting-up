@@ -54,7 +54,7 @@ done
 EOF
 chmod 755 /etc/sysconfig/modules/ipvs.modules
 # 立即加载ipvs相关模块
-bash /etc/sysconfig/modules/ipvs.modules && lsmod |grep "ip_vs"
+bash /etc/sysconfig/modules/ipvs.modules && lsmod |grep -e ip_vs -e nf_conntrack_ipv4
 
 # 配置 CentOS Base 源
 mkdir -p /etc/yum.repos.d/base && mv /etc/yum.repos.d/* /etc/yum.repos.d/base
@@ -117,9 +117,10 @@ cat > /etc/docker/daemon.json<<EOF
   "exec-opts": ["native.cgroupdriver=systemd"]
 }
 EOF
-systemctl daemon-reload
+mkdir -p /etc/systemd/system/docker.service.d
 
 # 设置docker开机自启并启动docker
+systemctl daemon-reload
 systemctl enable docker && systemctl restart docker
 
 # Installing kubeadm, kubelet and kubectl
