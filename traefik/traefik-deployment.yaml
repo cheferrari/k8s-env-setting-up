@@ -47,6 +47,8 @@ spec:
         - --api
         - --kubernetes
         - --logLevel=INFO
+        - --metrics
+        - --metrics.prometheus
 ---
 kind: Service
 apiVersion: v1
