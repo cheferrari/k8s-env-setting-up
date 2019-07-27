@@ -5,11 +5,11 @@ Helm installs the tiller service on your cluster to manage charts. Since k8s ena
 kubectl apply -f tiller-rbac.yaml
 ```
 ## 2. install helm and tiller
-helm init -o yaml，默认使用tiller镜像为: gcr.io/kubernetes-helm/tiller:v2.13.1 由于某些原因访问不到  
+helm init -o yaml，默认使用tiller镜像为: gcr.io/kubernetes-helm/tiller:v2.14.2 由于某些原因访问不到  
 ```
 helm init -o yaml
 ...
-        image: gcr.io/kubernetes-helm/tiller:v2.13.1
+        image: gcr.io/kubernetes-helm/tiller:v2.14.2
         imagePullPolicy: IfNotPresent
 ...
 ```
@@ -23,8 +23,8 @@ helm init -o yaml
 bash install-helm-and-tiller.sh
 # 等待十几秒，确认安装成功
 helm version
-Client: &version.Version{SemVer:"v2.13.1", GitCommit:"618447cbf203d147601b4b9bd7f8c37a5d39fbb4", GitTreeState:"clean"}
-Server: &version.Version{SemVer:"v2.13.1", GitCommit:"618447cbf203d147601b4b9bd7f8c37a5d39fbb4", GitTreeState:"clean"}
+Client: &version.Version{SemVer:"v2.14.2", GitCommit:"618447cbf203d147601b4b9bd7f8c37a5d39fbb4", GitTreeState:"clean"}
+Server: &version.Version{SemVer:"v2.14.2", GitCommit:"618447cbf203d147601b4b9bd7f8c37a5d39fbb4", GitTreeState:"clean"}
 ```
 ## 3. add chart repository
 ```

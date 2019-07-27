@@ -7,8 +7,8 @@
 # docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:<tag>
 #############################
 
-HELM_VERSION=v2.13.1
-TILLER_VERSION=v2.13.1
+HELM_VERSION=v2.14.2
+TILLER_VERSION=v2.14.2
 echo "INSTALL HELM ${HELM_VERSION} ..."
 curl -fsSL -o /opt/helm-${HELM_VERSION}-linux-amd64.tar.gz http://mirror.azure.cn/kubernetes/helm/helm-${HELM_VERSION}-linux-amd64.tar.gz
 mkdir -p /opt/helm
