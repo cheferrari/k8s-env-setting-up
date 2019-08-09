@@ -9,6 +9,7 @@ sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
  
 # 关闭交换分区, Kubernetes v1.8+ 要求关闭系统 Swap
 swapoff -a
+# 永久关闭 分隔符为/ &引用前面的匹配内容
 sed -i 's/.*swap.*/#&/' /etc/fstab
 #yes | cp /etc/fstab /etc/fstab_bak
 #cat /etc/fstab_bak |grep -v swap > /etc/fstab
@@ -42,6 +43,15 @@ sysctl --system
 # sysctl -p
 
 # 如果k8s proxy-model 要使用 ipvs ，则内核开启 ipvs 模块, ipvs 对内核版本有要求
+#cat >/etc/sysconfig/modules/ipvs.modules <<EOF
+##!/bin/bash
+#ipvs_mods_dir="/usr/lib/modules/\$(uname -r)/kernel/net/netfilter/ipvs"
+#for i in \$(ls $ipvs_mods_dir | grep -o "^[^.]*"); do
+#    /sbin/modinfo -F filename \$i &> /dev/null
+#    if [ \$? -eq 0 ]; then
+#        /sbin/modprobe \$i
+#    fi
+#done
 cat >/etc/sysconfig/modules/ipvs.modules <<EOF
 #!/bin/bash
 ipvs_modules="ip_vs ip_vs_lc ip_vs_wlc ip_vs_rr ip_vs_wrr ip_vs_lblc ip_vs_lblcr ip_vs_dh ip_vs_sh ip_vs_pe_sip ip_vs_nq ip_vs_sed ip_vs_ftp nf_conntrack_ipv4"
