@@ -1,8 +1,8 @@
 #!/bin/bash
-VERSION=${K8S_VERSION:-v1.15.1}
+VERSION=${K8S_VERSION:-v1.15.3}
 
 ###################################################################################################
-# 拉取kubeadm1.14.1初始化所需镜像，有以下几个镜像源可选：
+# 拉取kubeadm初始化所需镜像，有以下几个镜像源可选：
 # 1. mirrorgooglecontainers  https://hub.docker.com/u/mirrorgooglecontainers  无coredns镜像
 # 2. https://hub.docker.com/u/anjia0532/，https://github.com/anjia0532/gcr.io_mirror 最近没有更新
 # 3. Azure Mirrors中国  http://mirror.azure.cn/help/gcr-proxy-cache.html  
@@ -26,13 +26,13 @@ VERSION=${K8S_VERSION:-v1.15.1}
 #k8s.gcr.io/etcd:3.3.10
 #k8s.gcr.io/coredns:1.3.1
 
-# k8s.gcr.io/kube-apiserver:v1.15.1
-# k8s.gcr.io/kube-controller-manager:v1.15.1
-# k8s.gcr.io/kube-scheduler:v1.15.1
-# k8s.gcr.io/kube-proxy:v1.15.1
-# k8s.gcr.io/pause:3.1
-# k8s.gcr.io/etcd:3.3.10
-# k8s.gcr.io/coredns:1.3.1
+#k8s.gcr.io/kube-apiserver:v1.15.3
+#k8s.gcr.io/kube-controller-manager:v1.15.3
+#k8s.gcr.io/kube-scheduler:v1.15.3
+#k8s.gcr.io/kube-proxy:v1.15.3
+#k8s.gcr.io/pause:3.1
+#k8s.gcr.io/etcd:3.3.10
+#k8s.gcr.io/coredns:1.3.1
 
 images=(kube-proxy:$VERSION kube-scheduler:$VERSION kube-controller-manager:$VERSION kube-apiserver:$VERSION etcd:3.3.10 pause:3.1 coredns:1.3.1)
 for imageName in ${images[@]} ; do
@@ -44,4 +44,4 @@ done
 #docker tag coredns/coredns:1.3.1 k8s.gcr.io/coredns:1.3.1
 #docker rmi coredns/coredns:1.3.1
 # kubeadm 初始化 k8s 集群，master节点执行，https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#instructions
-# kubeadm init --kubernetes-version=v1.15.1 --pod-network-cidr=10.244.0.0/16
+# kubeadm init --kubernetes-version=v1.15.3 --pod-network-cidr=10.244.0.0/16

@@ -104,7 +104,7 @@ yum insatll -y ipvsadm ipset
 yum install -y yum-utils device-mapper-persistent-data lvm2
 
 # 安装指定版本的 docker-ce 
-# k8s 1.15.1 The list of validated docker versions remains unchanged. The current list is 1.13.1, 17.03, 17.06, 17.09, 18.06, 18.09
+# k8s 1.15.3 The list of validated docker versions remains unchanged. The current list is 1.13.1, 17.03, 17.06, 17.09, 18.06, 18.09
 # k8s 1.12.0 The list of validated docker versions was updated to 1.11.1, 1.12.1, 1.13.1, 17.03, 17.06, 17.09, 18.06
 
 # 如果是 k8s 1.11版本，则要安装 docker-ce 17.03 系列
@@ -135,8 +135,8 @@ systemctl daemon-reload
 systemctl enable docker && systemctl restart docker
 
 # Installing kubeadm, kubelet and kubectl
-# 安装指定版本的 kubeadm, 默认 1.15.1 版本
+# 安装指定版本的 kubeadm, 默认 1.15.3 版本
 # yum list kubeadm --showduplicates
-# yum install -y kubelet-1.15.1 kubeadm-1.15.1 kubectl-1.15.1
-yum install -y kubelet-${K8S_VERSION:-1.15.1} kubeadm-${K8S_VERSION:-1.15.1} kubectl-${K8S_VERSION:-1.15.1} --disableexcludes=kubernetes
+# yum install -y kubelet-1.15.3 kubeadm-1.15.3 kubectl-1.15.3
+yum install -y kubelet-${K8S_VERSION:-1.15.3} kubeadm-${K8S_VERSION:-1.15.3} kubectl-${K8S_VERSION:-1.15.3} --disableexcludes=kubernetes
 systemctl enable kubelet && systemctl start kubelet
