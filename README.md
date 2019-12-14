@@ -18,7 +18,7 @@ This script is suitable for centos7.6.
 - [Usage](#usage)
   - [环境准备](#环境准备)
   - [1 初始化系统环境](#1-初始化系统环境)
-  - [2 下载镜像-可选](#2-下载镜像-可选)
+  - [2 下载镜像](#2-下载镜像)
     - [【可选】下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下](#可选下载镜像前运行-kubeadm-config-images-list-获取所需镜像及版本信息如下)
     - [【替换脚本中镜像tag】下载镜像（所有节点均执行）](#替换脚本中镜像tag下载镜像所有节点均执行)
   - [3 kubeadm 初始化 k8s 集群](#3-kubeadm-初始化-k8s-集群)
