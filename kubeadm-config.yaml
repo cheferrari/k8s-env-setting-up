@@ -1,7 +1,7 @@
 apiVersion: kubeadm.k8s.io/v1beta2
 kind: ClusterConfiguration
-kubernetesVersion: v1.15.3
-#imageRepository: k8s.gcr.io
+kubernetesVersion: v1.17.0
+imageRepository: gcr.azk8s.cn/google_containers
 networking:
   podSubnet: 10.244.0.0/16
 ---
