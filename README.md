@@ -235,14 +235,12 @@ k8s-node1   238m         5%     806Mi           21%
 [Kubectl Autocomplete](https://kubernetes.io/docs/reference/kubectl/cheatsheet/ "Kubectl Autocomplete")
 ```
 echo "source <(kubectl completion bash)" >> ~/.bashrc
-# 立即生效
-source .bashrc 
+source ~/.bashrc
 ```
 ```
 # kubeadm自动补全
 echo "source <(kubeadm completion bash)" >> ~/.bashrc
-# 立即生效
-source .bashrc
+source ~/.bashrc
 ```
 ### 10.2 安装kubens命令
 [kubens and kubectx](https://github.com/ahmetb/kubectx)
