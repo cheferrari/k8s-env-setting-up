@@ -77,6 +77,11 @@ k8s.gcr.io/pause:3.1
 k8s.gcr.io/etcd:3.4.3-0
 k8s.gcr.io/coredns:1.6.5
 ```
+下载镜像
+```
+kubeadm config images pull --image-repository=gcr.azk8s.cn/google_containers
+```
+
 ### 【替换脚本中镜像tag】下载镜像（所有节点均执行）
 ```
 bash pull-k8s-images.sh
