@@ -4,10 +4,10 @@ k8s-env-setting-up is a shell script to initialize the kubernetes's machine envi
 This script is suitable for centos7.6. 
 - OS: `CentOS7.6`
 - kubernetes: `v1.18.0`
-- docker-ce: `19.03.4`
+- docker-ce: `19.03.8`
 - network add-on: `flannel v0.11.0`(可选)
 - kube-proxy mode: `ipvs` (可选)
-- coredns: `1.6.5`
+- coredns: `1.6.7`
 - etcd: `3.4.3-0`
 - helm & tiller：[v2.14.2](https://github.com/cheferrari/k8s-env-setting-up/tree/master/helm)
 - ingress: [traefik](https://github.com/cheferrari/k8s-env-setting-up/tree/master/traefik)
