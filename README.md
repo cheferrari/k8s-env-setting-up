@@ -109,11 +109,16 @@ Then you can join any number of worker nodes by running the following on each as
 kubeadm join 192.168.75.165:6443 --token e0bj9u.x0083tvpogchq5bt \
     --discovery-token-ca-cert-hash sha256:5f744ed3b7e63cbcffa4a71bfacd90143fd7f371ee5d82aba77205514b33721c
 ```
-## 4 安装网络附件 Flannel
+## 4 安装网络附件flannel/calico
 [The network must be deployed before any applications. Also, CoreDNS will not start up before a network is installed. kubeadm only supports Container Network Interface (CNI) based networks (and does not support kubenet)](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network)  
 master节点执行如下命令，安装网络附件addon(必须先安装网络附件，不然coredns会一直处于Pending状态)  
 ```
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
+kubectl apply -f kube-flannel.yml
+#kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/a70459be0084506e4ec919aa1c114638878db11b/Documentation/kube-flannel.yml
+```
+安装calico   
+```
+kubectl apply -f calico.yaml
 ```
 ## 5 master节点可调度pod【可选】
 ```
