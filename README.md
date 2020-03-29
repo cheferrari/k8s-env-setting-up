@@ -89,6 +89,9 @@ kubeadm init --kubernetes-version=v1.18.0 --pod-network-cidr=10.244.0.0/16
 # 如果kube-proxy要启用ipvs模式，则执行如下命令
 # kubeadm init --config=kubeadm-config.yaml
 ```
+`kubeadm init`命令参考: [kubeadm init](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/)   
+`kubeadm config print init-defaults`
+
 根据提示拷贝kubeconfig文件到指定目录
 ```
 Your Kubernetes control-plane has initialized successfully!
