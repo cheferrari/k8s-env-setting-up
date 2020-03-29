@@ -170,7 +170,7 @@ total 28
 # cat metrics-server-deployment.yaml
 ...
       - name: metrics-server
-        image: k8s.gcr.io/metrics-server-amd64:v0.3.3
+        image: k8s.gcr.io/metrics-server-amd64:v0.3.6
         imagePullPolicy: IfNotPresent
         args:
         - --kubelet-insecure-tls
@@ -212,8 +212,8 @@ data:
 
 ### 拉镜像
 ```
-docker pull gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.3
-docker tag gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.3 k8s.gcr.io/metrics-server-amd64:v0.3.3
+docker pull gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.6
+docker tag gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.6 k8s.gcr.io/metrics-server-amd64:v0.3.6
 ```
 
 ### 部署metrics-server
