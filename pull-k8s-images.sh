@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=${K8S_VERSION:-v1.17.0}
+VERSION=${K8S_VERSION:-v1.17.4}
 
 ###################################################################################################
 # 拉取kubeadm初始化所需镜像，有以下几个镜像源可选：
@@ -18,21 +18,13 @@ VERSION=${K8S_VERSION:-v1.17.0}
 # 运行 kubeadm config images list 命令可查看该版本kubeadm 所需那些镜像及版本信息
 
 #[root@k8s-node1 ~]# kubeadm config images list
-#k8s.gcr.io/kube-apiserver:v1.14.2
-#k8s.gcr.io/kube-controller-manager:v1.14.2
-#k8s.gcr.io/kube-scheduler:v1.14.2
-#k8s.gcr.io/kube-proxy:v1.14.2
+#k8s.gcr.io/kube-apiserver:v1.17.4
+#k8s.gcr.io/kube-controller-manager:v1.17.4
+#k8s.gcr.io/kube-scheduler:v1.17.4
+#k8s.gcr.io/kube-proxy:v1.17.4
 #k8s.gcr.io/pause:3.1
-#k8s.gcr.io/etcd:3.3.10
-#k8s.gcr.io/coredns:1.3.1
-
-#k8s.gcr.io/kube-apiserver:v1.15.3
-#k8s.gcr.io/kube-controller-manager:v1.15.3
-#k8s.gcr.io/kube-scheduler:v1.15.3
-#k8s.gcr.io/kube-proxy:v1.15.3
-#k8s.gcr.io/pause:3.1
-#k8s.gcr.io/etcd:3.3.10
-#k8s.gcr.io/coredns:1.3.1
+#k8s.gcr.io/etcd:3.4.3-0
+#k8s.gcr.io/coredns:1.6.5
 
 images=(kube-proxy:$VERSION kube-scheduler:$VERSION kube-controller-manager:$VERSION kube-apiserver:$VERSION etcd:3.4.3-0 pause:3.1 coredns:1.6.5)
 for imageName in ${images[@]} ; do
