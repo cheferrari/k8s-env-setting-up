@@ -95,7 +95,7 @@ echo "y" | yum makecache fast
 # 安装一些常用工具
 yum install -y yum-utils lrzsz bash-completion wget net-tools
 # kube-proxy开启ipvs模式需要的软件包
-yum insatll -y ipvsadm ipset
+yum install -y ipvsadm ipset
 # 时间同步，-u参数可以越过防火墙与主机同步
 # yum install -y ntpdate
 # ntpdate -u ntp1.aliyun.com
