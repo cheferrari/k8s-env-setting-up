@@ -43,7 +43,7 @@ spec:
     max: 65535
   # SELinux
   seLinux:
-    # SELinux is unsed in CaaSP
+    # SELinux is unused in CaaSP
     rule: 'RunAsAny'
 ---
 kind: ClusterRole
@@ -105,8 +105,8 @@ metadata:
 data:
   cni-conf.json: |
     {
-      "cniVersion": "0.2.0",
       "name": "cbr0",
+      "cniVersion": "0.3.1",
       "plugins": [
         {
           "type": "flannel",
@@ -154,11 +154,11 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: beta.kubernetes.io/os
+                  - key: kubernetes.io/os
                     operator: In
                     values:
                       - linux
-                  - key: beta.kubernetes.io/arch
+                  - key: kubernetes.io/arch
                     operator: In
                     values:
                       - amd64
@@ -169,7 +169,8 @@ spec:
       serviceAccountName: flannel
       initContainers:
       - name: install-cni
-        image: quay.azk8s.cn/coreos/flannel:v0.11.0-amd64
+        image: quay.mirrors.ustc.edu.cn/coreos/flannel:v0.12.0-amd64
+        #image: quay.io/coreos/flannel:v0.12.0-amd64
         command:
         - cp
         args:
@@ -183,7 +184,8 @@ spec:
           mountPath: /etc/kube-flannel/
       containers:
       - name: kube-flannel
-        image: quay.azk8s.cn/coreos/flannel:v0.11.0-amd64
+        image: quay.mirrors.ustc.edu.cn/coreos/flannel:v0.12.0-amd64
+        #image: quay.io/coreos/flannel:v0.12.0-amd64
         command:
         - /opt/bin/flanneld
         args:
@@ -199,7 +201,7 @@ spec:
         securityContext:
           privileged: false
           capabilities:
-             add: ["NET_ADMIN"]
+            add: ["NET_ADMIN"]
         env:
         - name: POD_NAME
           valueFrom:
@@ -224,4 +226,3 @@ spec:
         - name: flannel-cfg
           configMap:
             name: kube-flannel-cfg
-
