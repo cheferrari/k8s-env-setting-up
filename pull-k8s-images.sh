@@ -8,7 +8,8 @@ VERSION=${K8S_VERSION:-v1.18.0}
 # 3. Azure Mirrors中国  http://mirror.azure.cn/help/gcr-proxy-cache.html  
 #    GCR Proxy Cache服务器相当于一台GCR镜像服务器，国内用户可以经由该服务器从gcr.io下载镜像
 #    docker pull gcr.azk8s.cn/google_containers/kube-apiserver:v1.14.2
-#    docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.13.1
+#    docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.13.1  
+#    目前Proxy Server仅限于 Azure China IP 使用，不再对外提供服务
 # 4. aliyun阿里云
 #    docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.14.2
 #    docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.13.1
@@ -28,9 +29,9 @@ VERSION=${K8S_VERSION:-v1.18.0}
 
 images=(kube-proxy:$VERSION kube-scheduler:$VERSION kube-controller-manager:$VERSION kube-apiserver:$VERSION etcd:3.4.3-0 pause:3.2 coredns:1.6.7)
 for imageName in ${images[@]} ; do
-docker pull gcr.azk8s.cn/google_containers/$imageName
-docker tag gcr.azk8s.cn/google_containers/$imageName k8s.gcr.io/$imageName
-docker rmi gcr.azk8s.cn/google_containers/$imageName
+docker pull registry.aliyuncs.com/google_containers/$imageName
+docker tag registry.aliyuncs.com/google_containers/$imageName k8s.gcr.io/$imageName
+docker rmi registry.aliyuncs.com/google_containers/$imageName
 done
 #docker pull coredns/coredns:1.3.1
 #docker tag coredns/coredns:1.3.1 k8s.gcr.io/coredns:1.3.1
