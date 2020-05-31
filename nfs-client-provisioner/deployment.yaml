@@ -24,7 +24,7 @@ spec:
       serviceAccountName: nfs-client-provisioner
       containers:
         - name: nfs-client-provisioner
-          image: quay.azk8s.cn/external_storage/nfs-client-provisioner:latest
+          image: quay.io/external_storage/nfs-client-provisioner:latest
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: nfs-client-root
