@@ -1,5 +1,5 @@
 # Overview
-![language](https://img.shields.io/badge/language-shell-orange.svg) ![shellcheck](https://github.com/actions/cheferrari/k8s-env-setting-up/workflows/.github/workflows/ci-workflow.yml/badge.svg)
+![language](https://img.shields.io/badge/language-shell-orange.svg) ![shellcheck](https://github.com/actions/cheferrari/k8s-env-setting-up/workflows/.github/workflows/ci-workflow.yml/badge.svg)  
 k8s-env-setting-up is a shell script to initialize the kubernetes's machine environment.
 This script is suitable for centos7.6. 
 - OS: `CentOS7.6`
