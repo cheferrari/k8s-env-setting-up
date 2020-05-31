@@ -13,10 +13,9 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   shellcheck:
-    name: Shellcheck
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2.2.0
     - name: Run ShellCheck
       uses: ludeeus/action-shellcheck@master
   # This workflow contains a single job called "build"
