@@ -1,5 +1,5 @@
 # Overview
-![language](https://img.shields.io/badge/language-shell-orange.svg)  
+![language](https://img.shields.io/badge/language-shell-orange.svg) ![](https://github.com/actions/cheferrari/k8s-env-setting-up/workflows/.github/workflows/ci-workflow.yml/badge.svg)
 k8s-env-setting-up is a shell script to initialize the kubernetes's machine environment.
 This script is suitable for centos7.6. 
 - OS: `CentOS7.6`
@@ -22,7 +22,7 @@ This script is suitable for centos7.6.
     - [【可选】下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下](#可选下载镜像前运行-kubeadm-config-images-list-获取所需镜像及版本信息如下)
     - [【替换脚本中镜像tag】下载镜像（所有节点均执行）](#替换脚本中镜像tag下载镜像所有节点均执行)
   - [3 kubeadm 初始化 k8s 集群](#3-kubeadm-初始化-k8s-集群)
-  - [4 安装网络附件 Flannel](#4-安装网络附件-flannel)
+  - [4 安装网络附件flannel/calico](#4-安装网络附件flannelcalico)
   - [5 master节点可调度pod【可选】](#5-master节点可调度pod可选)
   - [6 worker node加入集群](#6-worker-node加入集群)
   - [7 Install helm and tiller](#7-install-helm-and-tiller)
