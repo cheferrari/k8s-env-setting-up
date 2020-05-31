@@ -28,10 +28,10 @@ VERSION=${K8S_VERSION:-v1.18.3}
 #k8s.gcr.io/coredns:1.6.7
 
 images=(kube-proxy:$VERSION kube-scheduler:$VERSION kube-controller-manager:$VERSION kube-apiserver:$VERSION etcd:3.4.3-0 pause:3.2 coredns:1.6.7)
-for imageName in ${images[@]} ; do
-docker pull registry.aliyuncs.com/google_containers/$imageName
-docker tag registry.aliyuncs.com/google_containers/$imageName k8s.gcr.io/$imageName
-docker rmi registry.aliyuncs.com/google_containers/$imageName
+for imageName in "${images[@]}" ; do
+docker pull registry.aliyuncs.com/google_containers/"${imageName}"
+docker tag registry.aliyuncs.com/google_containers/"${imageName}" k8s.gcr.io/"${imageName}"
+docker rmi registry.aliyuncs.com/google_containers/"${imageName}"
 done
 #docker pull coredns/coredns:1.3.1
 #docker tag coredns/coredns:1.3.1 k8s.gcr.io/coredns:1.3.1
