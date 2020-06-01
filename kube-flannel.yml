@@ -169,7 +169,7 @@ spec:
       serviceAccountName: flannel
       initContainers:
       - name: install-cni
-        image: quay.mirrors.ustc.edu.cn/coreos/flannel:v0.12.0-amd64
+        image: ferrariche/flannel:v0.12.0-amd64
         #image: quay.io/coreos/flannel:v0.12.0-amd64
         command:
         - cp
