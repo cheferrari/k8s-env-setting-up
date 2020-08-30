@@ -2,8 +2,8 @@
 # 适用于CentOS7及以上，快速配置k8s机器所需环境
 
 # 设定k8s and docker-ce version
-K8S_VERSION=1.18.3
-DOCKER_VERSION=19.03.8
+K8S_VERSION=1.18.8
+DOCKER_VERSION=19.03.11
 
 # 系统及内核配置
 # 关闭Selinux and firewalld
@@ -127,7 +127,7 @@ yum install -y containerd.io-1.2.13 docker-ce-${DOCKER_VERSION} docker-ce-cli-${
 mkdir -p /etc/docker
 cat > /etc/docker/daemon.json<<EOF
 {
-  "registry-mirrors": ["https://registry.docker-cn.com", "https://docker.mirrors.ustc.edu.cn", "https://hub-mirror.c.163.com", "https://c2t380sl.mirror.swr.myhuaweicloud.com"],
+  "registry-mirrors": ["https://registry.docker-cn.com", "https://hub-mirror.c.163.com"],
   "max-concurrent-downloads": 20,
   "exec-opts": ["native.cgroupdriver=systemd"]
 }
