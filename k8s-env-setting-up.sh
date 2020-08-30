@@ -2,7 +2,7 @@
 # 适用于CentOS7及以上，快速配置k8s机器所需环境
 
 # 设定k8s and docker-ce version
-K8S_VERSION=1.18.8
+K8S_VERSION=1.19.0
 DOCKER_VERSION=19.03.11
 
 # 系统及内核配置

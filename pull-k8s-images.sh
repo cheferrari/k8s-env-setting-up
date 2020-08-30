@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=${K8S_VERSION:-v1.18.8}
+VERSION=${K8S_VERSION:-v1.19.0}
 
 ###################################################################################################
 # 拉取kubeadm初始化所需镜像，有以下几个镜像源可选：
@@ -27,7 +27,7 @@ VERSION=${K8S_VERSION:-v1.18.8}
 #k8s.gcr.io/etcd:3.4.3-0
 #k8s.gcr.io/coredns:1.6.7
 
-images=(kube-proxy:$VERSION kube-scheduler:$VERSION kube-controller-manager:$VERSION kube-apiserver:$VERSION etcd:3.4.3-0 pause:3.2 coredns:1.6.7)
+images=(kube-proxy:$VERSION kube-scheduler:$VERSION kube-controller-manager:$VERSION kube-apiserver:$VERSION etcd:3.4.9-1 pause:3.2 coredns:1.7.0)
 for imageName in "${images[@]}" ; do
 docker pull registry.aliyuncs.com/google_containers/"${imageName}"
 docker tag registry.aliyuncs.com/google_containers/"${imageName}" k8s.gcr.io/"${imageName}"

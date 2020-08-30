@@ -3,9 +3,9 @@
 k8s-env-setting-up is a shell script to initialize the kubernetes's machine environment.
 This script is suitable for centos7.6. 
 - OS: `CentOS7.6`
-- kubernetes: `v1.18.8`
+- kubernetes: `v1.19.0`
 - docker-ce: `19.03.11`
-- network add-on: `flannel v0.11.0`(可选)
+- network add-on: `flannel v0.12.0`(可选)
 - kube-proxy mode: `ipvs` (可选)
 - coredns: `1.6.7`
 - etcd: `3.4.3-0`
@@ -66,13 +66,13 @@ bash k8s-env-setting-up.sh
 ### 【可选】下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下
 ```
 [root@localhost ~]# kubeadm config images list
-k8s.gcr.io/kube-apiserver:v1.18.8
-k8s.gcr.io/kube-controller-manager:v1.18.8
-k8s.gcr.io/kube-scheduler:v1.18.8
-k8s.gcr.io/kube-proxy:v1.18.8
+k8s.gcr.io/kube-apiserver:v1.19.0
+k8s.gcr.io/kube-controller-manager:v1.19.0
+k8s.gcr.io/kube-scheduler:v1.19.0
+k8s.gcr.io/kube-proxy:v1.19.0
 k8s.gcr.io/pause:3.2
-k8s.gcr.io/etcd:3.4.3-0
-k8s.gcr.io/coredns:1.6.7
+k8s.gcr.io/etcd:3.4.9-1
+k8s.gcr.io/coredns:1.7.0
 #下载镜像方法一:
 kubeadm config images pull --image-repository=registry.aliyuncs.com/google_containers
 
@@ -83,7 +83,7 @@ bash pull-k8s-images.sh
 master节点执行如下命令，替换成自己的k8s版本  
 参考：https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#instructions
 ```
-kubeadm init --kubernetes-version=v1.18.8 --pod-network-cidr=10.244.0.0/16
+kubeadm init --kubernetes-version=v1.19.0 --pod-network-cidr=10.244.0.0/16
 # 如果kube-proxy要启用ipvs模式，则执行如下命令
 # kubeadm init --config=kubeadm-config.yaml
 ```
