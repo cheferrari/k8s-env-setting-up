@@ -2,8 +2,8 @@
 # 适用于CentOS7及以上，快速配置k8s机器所需环境
 
 # 设定k8s and docker-ce version
-K8S_VERSION=1.19.0
-DOCKER_VERSION=19.03.11
+K8S_VERSION=1.20.6
+DOCKER_VERSION=20.10.6
 
 # 系统及内核配置
 # 关闭Selinux and firewalld
@@ -119,7 +119,8 @@ yum install -y yum-utils device-mapper-persistent-data lvm2
 # 本脚本默认安装 docker-ce 版本: 19.03.8
 # 还可以在命令行 export DOCKER_VERSION=xxx 来安装其他版本 docker 
 # https://kubernetes.io/docs/setup/cri/#docker    Version 18.06.2 is recommended
-yum install -y containerd.io-1.2.13 docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION}
+#yum install -y containerd.io-1.2.13 docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION}
+yum install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io
 
 # https://kubernetes.io/docs/setup/cri/#cgroup-drivers  
 # kubeadm开始建议使用systemd作为节点的cgroup控制器，因此建议读者参考本文流程配置docker为使用systemd，而非默认的Cgroupfs
@@ -132,7 +133,7 @@ cat > /etc/docker/daemon.json<<EOF
   "exec-opts": ["native.cgroupdriver=systemd"]
 }
 EOF
-mkdir -p /etc/systemd/system/docker.service.d
+#mkdir -p /etc/systemd/system/docker.service.d
 
 # 设置docker开机自启并启动docker
 systemctl daemon-reload
