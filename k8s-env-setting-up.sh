@@ -105,7 +105,7 @@ yum install -y ipvsadm ipset
 # ntpdate -u ntp1.aliyun.com
 
 # 安装 docker-ce 依赖
-yum install -y yum-utils device-mapper-persistent-data lvm2
+# yum install -y yum-utils device-mapper-persistent-data lvm2
 
 # 安装指定版本的 docker-ce 
 # k8s 1.15.3 The list of validated docker versions remains unchanged. The current list is 1.13.1, 17.03, 17.06, 17.09, 18.06, 18.09
@@ -128,7 +128,7 @@ yum install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} conta
 mkdir -p /etc/docker
 cat > /etc/docker/daemon.json<<EOF
 {
-  "registry-mirrors": ["https://registry.docker-cn.com", "https://hub-mirror.c.163.com"],
+  "registry-mirrors": ["https://hub-mirror.c.163.com"],
   "max-concurrent-downloads": 20,
   "exec-opts": ["native.cgroupdriver=systemd"]
 }
