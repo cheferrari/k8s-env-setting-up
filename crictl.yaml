@@ -1,0 +1,4 @@
+# Location of the client config file (default: "/etc/crictl.yaml") [$CRI_CONFIG_FILE]
+runtime-endpoint: unix:///var/run/containerd/containerd.sock
+image-endpoint: unix:///var/run/containerd/containerd.sock
+timeout: 10

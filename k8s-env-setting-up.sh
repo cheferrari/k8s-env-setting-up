@@ -1,9 +1,9 @@
 #!/bin/bash
 # 适用于CentOS7及以上，快速配置k8s机器所需环境
 
-# 设定k8s and docker-ce version
-K8S_VERSION=1.20.6
-DOCKER_VERSION=20.10.6
+# 设定k8s and version
+K8S_VERSION=1.22.2
+#DOCKER_VERSION=20.10.8
 
 # 系统及内核配置
 # 关闭Selinux and firewalld
@@ -70,6 +70,15 @@ chmod 755 /etc/sysconfig/modules/ipvs.modules
 # 立即加载ipvs相关模块
 bash /etc/sysconfig/modules/ipvs.modules && lsmod |grep -e ip_vs -e nf_conntrack_ipv4
 
+
+# containerd作为k8s runtime时需要这两个模块
+cat >/etc/modules-load.d/containerd.conf <<EOF
+overlay
+br_netfilter
+EOF
+modprobe overlay
+modprobe br_netfilter
+
 # 配置 CentOS Base 源
 mkdir -p /etc/yum.repos.d/base && mv /etc/yum.repos.d/* /etc/yum.repos.d/base
 curl -fsSL -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
@@ -120,28 +129,52 @@ yum install -y ipvsadm ipset
 # 还可以在命令行 export DOCKER_VERSION=xxx 来安装其他版本 docker 
 # https://kubernetes.io/docs/setup/cri/#docker    Version 18.06.2 is recommended
 #yum install -y containerd.io-1.2.13 docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION}
-yum install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io
+#yum install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io
+
+yum install -y containerd.io
+
+containerd config default > /etc/containerd/config.toml
+# 替换containerd配置文件
+# sed -i "s#k8s.gcr.io#registry.aliyuncs.com/google_containers#g"  /etc/containerd/config.toml
+sed -i "s#k8s.gcr.io/pause:3.2#registry.aliyuncs.com/google_containers/pause:3.5#g"  /etc/containerd/config.toml
+sed -i '/containerd.runtimes.runc.options/a\ \ \ \ \ \ \ \ \ \ \ \ SystemdCgroup = true' /etc/containerd/config.toml
+#sed -i "s#https://registry-1.docker.io#https://registry.aliyuncs.com#g"  /etc/containerd/config.toml
+sed -i "s#https://registry-1.docker.io#https://bqr1dr1n.mirror.aliyuncs.com#g"  /etc/containerd/config.toml
+#sed -i "s#https://registry-1.docker.io#https://registry.aliyuncs.com#g"  /etc/containerd/config.toml
+sed -i '/registry.mirrors]/a\ \ \ \ \ \ \ \ [plugins.\"io.containerd.grpc.v1.cri\".registry.mirrors.\"k8s.gcr.io\"]\n\ \ \ \ \ \ \ \ \ \ endpoint = [\"https://registry.aliyuncs.com/google_containers\"]' /etc/containerd/config.toml
+
+systemctl daemon-reload && systemctl enable containerd && systemctl restart containerd
 
 # https://kubernetes.io/docs/setup/cri/#cgroup-drivers  
 # kubeadm开始建议使用systemd作为节点的cgroup控制器，因此建议读者参考本文流程配置docker为使用systemd，而非默认的Cgroupfs
 # docker 加速
-mkdir -p /etc/docker
-cat > /etc/docker/daemon.json<<EOF
-{
-  "registry-mirrors": ["https://hub-mirror.c.163.com"],
-  "max-concurrent-downloads": 20,
-  "exec-opts": ["native.cgroupdriver=systemd"]
-}
-EOF
+#mkdir -p /etc/docker
+#cat > /etc/docker/daemon.json<<EOF
+# {
+#  "registry-mirrors": ["https://hub-mirror.c.163.com"],
+#  "max-concurrent-downloads": 20,
+#  "exec-opts": ["native.cgroupdriver=systemd"]
+#}
+#EOF
 #mkdir -p /etc/systemd/system/docker.service.d
 
 # 设置docker开机自启并启动docker
-systemctl daemon-reload
-systemctl enable docker && systemctl restart docker
+#systemctl daemon-reload
+#systemctl enable docker && systemctl restart docker
 
 # Installing kubeadm, kubelet and kubectl
 # 安装指定版本的 kubeadm
 # yum list kubeadm --showduplicates
 # yum install -y kubelet-1.15.3 kubeadm-1.15.3 kubectl-1.15.3
 yum install -y kubelet-${K8S_VERSION} kubeadm-${K8S_VERSION} kubectl-${K8S_VERSION} --disableexcludes=kubernetes
-systemctl enable kubelet && systemctl start kubelet
+
+# 添加crictl命令配置
+cat >/etc/crictl.yaml <<EOF
+runtime-endpoint: unix:///var/run/containerd/containerd.sock
+image-endpoint: unix:///var/run/containerd/containerd.sock
+timeout: 10
+EOF
+crictl config runtime-endpoint /run/containerd/containerd.sock
+
+# 设置运行时
+systemctl daemon-reload && systemctl enable kubelet && systemctl start kubelet

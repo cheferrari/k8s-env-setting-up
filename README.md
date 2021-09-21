@@ -3,12 +3,12 @@
 k8s-env-setting-up is a shell script to initialize the kubernetes's machine environment.
 This script is suitable for centos7.6-7.8. 
 - OS: `CentOS7.8`
-- kubernetes: `v1.20.6`
-- docker-ce: `20.10.6`
-- network add-on: `flannel v0.12.0`(可选)
+- kubernetes: `v1.22.2`
+- containerd: `1.4.9`
+- network add-on: `flannel v0.14.0`(可选)
 - kube-proxy mode: `ipvs` (可选)
-- coredns: `1.7.0`
-- etcd: `3.4.13-0`
+- coredns: `v1.8.4`
+- etcd: `3.5.0-0`
 - helm & tiller：[v2.14.2](https://github.com/cheferrari/k8s-env-setting-up/tree/master/helm)
 - ingress: [traefik](https://github.com/cheferrari/k8s-env-setting-up/tree/master/traefik)
 
@@ -39,7 +39,7 @@ This script is suitable for centos7.6-7.8.
 
 # Usage
 ## 环境准备
-两台centos7.6主机，最小化安装  
+两台centos7.6或7.8主机，最小化安装  
 设置主机名，重新登录即可
 ```
 hostnamectl set-hostname k8s-node1
@@ -57,29 +57,41 @@ EOF
 ```
 git clone https://github.com/cheferrari/k8s-env-setting-up.git
 cd k8s-env-setting-up
-# 安装指定版本的docker或k8s，则修改脚本中 DOCKER_VERSION and K8S_VERSION
-# export DOCKER_VERSION=18.09.9.ce
-# export K8S_VERSION=1.17.6
+# 安装指定版本的k8s，则修改脚本中 K8S_VERSION，或
+# export K8S_VERSION=1.22.2
 bash k8s-env-setting-up.sh
 ```
 ## 2 下载镜像
 ### 【可选】下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下
 ```
 [root@localhost ~]# kubeadm config images list
-k8s.gcr.io/kube-apiserver:v1.20.6
-k8s.gcr.io/kube-controller-manager:v1.20.6
-k8s.gcr.io/kube-scheduler:v1.20.6
-k8s.gcr.io/kube-proxy:v1.20.6
-k8s.gcr.io/pause:3.2
-k8s.gcr.io/etcd:3.4.13-0
-k8s.gcr.io/coredns:1.7.0
+k8s.gcr.io/kube-apiserver:v1.22.2
+k8s.gcr.io/kube-controller-manager:v1.22.2
+k8s.gcr.io/kube-scheduler:v1.22.2
+k8s.gcr.io/kube-proxy:v1.22.2
+k8s.gcr.io/pause:3.5
+k8s.gcr.io/etcd:3.5.0-0
+k8s.gcr.io/coredns/coredns:v1.8.4
 #下载镜像方法一:
-kubeadm config images pull --image-repository=registry.aliyuncs.com/google_containers
+kubeadm config images pull --config kubeadm.yaml
+#kubeadm config images pull --image-repository=registry.aliyuncs.com/google_containers
+
+# 查看下载的镜像：
+ctr -n k8s.io i ls
+
+# 上面在拉取 coredns 镜像的时候出错了，没有找到这个镜像，我们可以手动 pull 该镜像，然后重新 tag 下镜像地址即可：
+ctr -n k8s.io i pull docker.io/coredns/coredns:1.8.4
+ctr -n k8s.io i tag docker.io/coredns/coredns:1.8.4 registry.aliyuncs.com/google_containers/coredns:v1.8.4
 
 #下载镜像方法二：替换脚本中镜像tag，下载镜像（所有节点均执行）
 bash pull-k8s-images.sh
 ```
 ## 3 kubeadm 初始化 k8s 集群
+通过下面的命令在 master 节点上输出集群初始化默认使用的配置，然后根据我们自己的需求修改配置，比如修改 imageRepository 指定集群初始化时拉取 Kubernetes 所需镜像的地址，kube-proxy 的模式为 ipvs，另外需要注意的是我们这里是准备安装 flannel 网络插件的，需要将 networking.podSubnet 设置为10.244.0.0/16
+```
+kubeadm config print init-defaults --component-configs KubeletConfiguration > kubeadm.yaml
+```
+
 master节点执行如下命令，替换成自己的k8s版本  
 参考：https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#instructions
 ```
@@ -111,7 +123,7 @@ kubeadm join 192.168.75.165:6443 --token e0bj9u.x0083tvpogchq5bt \
 [The network must be deployed before any applications. Also, CoreDNS will not start up before a network is installed. kubeadm only supports Container Network Interface (CNI) based networks (and does not support kubenet)](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network)  
 master节点执行如下命令，安装网络附件addon(必须先安装网络附件，不然coredns会一直处于Pending状态)  
 ```
-kubectl apply -f kube-flannel.yml
+kubectl apply -f kube-flannel-v0.14.yml
 #kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
 安装calico   
@@ -124,9 +136,11 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 This will remove the node-role.kubernetes.io/master taint from any nodes that have it, including the master node, meaning that the scheduler will then be able to schedule pods everywhere
 ## 6 worker node加入集群
+如果忘记了上面的 join 命令可以使用命令 kubeadm token create --print-join-command 重新获取。
 ```
 kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>
 ```
+
 在 k8s 1.8 之后，默认生成的 token 有效期只有 24 小时，之后就无效了。if you require a non-expiring token use --token-ttl 0  
 在初始化集群之后如果 token 过期一般分一下几部重新加入集群。
 - 重新生成新的 token
@@ -146,6 +160,13 @@ ded14fed2cf501a5ded219af9d6c62287327bcbbbaa5c96aa17dc0d1583a9ea9
 - 新节点加入集群
 ```
 $ kubeadm join ip:port --token 2oqkba.vuwvab1o92vd2k1u --discovery-token-ca-cert-hash sha256:ded14fed2cf501a5ded219af9d6c62287327bcbbbaa5c96aa17dc0d1583a9ea9
+```
+- 查看所有节点
+```
+[root@master ~]# kubectl get no -owide
+NAME     STATUS   ROLES                  AGE     VERSION   INTERNAL-IP      EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION           CONTAINER-RUNTIME
+master   Ready    control-plane,master   2d21h   v1.22.2   192.168.75.142   <none>        CentOS Linux 7 (Core)   3.10.0-1127.el7.x86_64   containerd://1.4.9
+node1    Ready    <none>                 31m     v1.22.2   192.168.75.143   <none>        CentOS Linux 7 (Core)   3.10.0-1127.el7.x86_64   containerd://1.4.9
 ```
 
 ## 7 Install helm and tiller
