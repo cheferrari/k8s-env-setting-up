@@ -9,8 +9,7 @@ This script is suitable for centos7.6-7.8.
 - kube-proxy mode: `ipvs` (可选)
 - coredns: `v1.8.4`
 - etcd: `3.5.0-0`
-- helm & tiller：[v2.14.2](https://github.com/cheferrari/k8s-env-setting-up/tree/master/helm)
-- ingress: [traefik](https://github.com/cheferrari/k8s-env-setting-up/tree/master/traefik)
+- ingress: `traefik`
 
 # Table of Contents
 - [Overview](#overview)
@@ -24,15 +23,15 @@ This script is suitable for centos7.6-7.8.
   - [4 安装网络附件flannel/calico](#4-安装网络附件flannelcalico)
   - [5 master节点可调度pod【可选】](#5-master节点可调度pod可选)
   - [6 worker node加入集群](#6-worker-node加入集群)
-  - [7 Install helm and tiller](#7-install-helm-and-tiller)
+  - [7 Install helm](#7-install-helm)
   - [8 Install Traefik](#8-install-traefik)
   - [9 Install metrics-server](#9-install-metrics-server)
-    - [修改metrics-server-deployment.yaml](#修改metrics-server-deploymentyaml)
+    - [修改components.yaml](#修改componentsyaml)
     - [metrics-server参数介绍](#metrics-server参数介绍)
     - [拉镜像](#拉镜像)
     - [部署metrics-server](#部署metrics-server)
   - [10 使用小建议](#10-使用小建议)
-    - [10.1 kubectl命令自动补全](#101-kubectl命令自动补全)
+    - [10.1 kubectl/kubeadm/helm命令自动补全](#101-kubectlkubeadmhelm命令自动补全)
     - [10.2 安装kubens命令](#102-安装kubens命令)
     - [10.3 kubectl效率提升](#103-kubectl效率提升)
     - [10.4 kubeadm-ha](#104-kubeadm-ha)
@@ -87,20 +86,102 @@ ctr -n k8s.io i tag docker.io/coredns/coredns:1.8.4 registry.aliyuncs.com/google
 bash pull-k8s-images.sh
 ```
 ## 3 kubeadm 初始化 k8s 集群
-通过下面的命令在 master 节点上输出集群初始化默认使用的配置，然后根据我们自己的需求修改配置，比如修改 imageRepository 指定集群初始化时拉取 Kubernetes 所需镜像的地址，kube-proxy 的模式为 ipvs，另外需要注意的是我们这里是准备安装 flannel 网络插件的，需要将 networking.podSubnet 设置为10.244.0.0/16
+**Master节点初始化**  
+通过下面的命令在 master 节点上输出集群初始化默认使用的配置，然后根据我们自己的需求修改配置，比如修改 imageRepository 指定集群初始化时拉取 Kubernetes 所需镜像的地址，kube-proxy 的模式为 ipvs，另外需要注意的是我们这里是准备安装 flannel 网络插件的，需要将 networking.podSubnet 设置为10.244.0.0/16  
 ```
 kubeadm config print init-defaults --component-configs KubeletConfiguration > kubeadm.yaml
 ```
-
-master节点执行如下命令，替换成自己的k8s版本  
+master节点执行如下初始化命令
 参考：https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#instructions
 ```
-kubeadm init --kubernetes-version=v1.20.6 --pod-network-cidr=10.244.0.0/16 --image-repository=registry.aliyuncs.com/google_containers
+kubeadm init --config kubeadm.yaml
+
+cat kubeadm.yaml
+# kubeadm config print init-defaults --component-configs KubeletConfiguration > kubeadm.yaml
+apiVersion: kubeadm.k8s.io/v1beta3
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 192.168.75.142
+  bindPort: 6443
+nodeRegistration:
+  criSocket: /run/containerd/containerd.sock
+  #criSocket: /var/run/dockershim.sock
+  imagePullPolicy: IfNotPresent
+  name: master
+  taints: null
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta3
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: {}
+dns: {}
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+imageRepository: registry.aliyuncs.com/google_containers
+kind: ClusterConfiguration
+kubernetesVersion: 1.22.2
+networking:
+  dnsDomain: cluster.local
+  serviceSubnet: 10.96.0.0/12
+  podSubnet: 10.244.0.0/16
+scheduler: {}
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+authentication:
+  anonymous:
+    enabled: false
+  webhook:
+    cacheTTL: 0s
+    enabled: true
+  x509:
+    clientCAFile: /etc/kubernetes/pki/ca.crt
+authorization:
+  mode: Webhook
+  webhook:
+    cacheAuthorizedTTL: 0s
+    cacheUnauthorizedTTL: 0s
+cgroupDriver: systemd
+clusterDNS:
+- 10.96.0.10
+clusterDomain: cluster.local
+cpuManagerReconcilePeriod: 0s
+evictionPressureTransitionPeriod: 0s
+fileCheckFrequency: 0s
+healthzBindAddress: 127.0.0.1
+healthzPort: 10248
+httpCheckFrequency: 0s
+imageMinimumGCAge: 0s
+kind: KubeletConfiguration
+logging: {}
+memorySwap: {}
+nodeStatusReportFrequency: 0s
+nodeStatusUpdateFrequency: 0s
+rotateCertificates: true
+runtimeRequestTimeout: 0s
+shutdownGracePeriod: 0s
+shutdownGracePeriodCriticalPods: 0s
+staticPodPath: /etc/kubernetes/manifests
+streamingConnectionIdleTimeout: 0s
+syncFrequency: 0s
+volumeStatsAggPeriod: 0s
+
+
+# kubeadm init --kubernetes-version=v1.20.6 --pod-network-cidr=10.244.0.0/16 --image-repository=registry.aliyuncs.com/google_containers
 # 如果kube-proxy要启用ipvs模式，则执行如下命令
 # kubeadm init --config=kubeadm-config.yaml
 ```
 `kubeadm init`命令参考: [kubeadm init](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/)   
-`kubeadm config print init-defaults`
 
 根据提示拷贝kubeconfig文件到指定目录
 ```
@@ -122,11 +203,12 @@ kubeadm join 192.168.75.165:6443 --token e0bj9u.x0083tvpogchq5bt \
 ## 4 安装网络附件flannel/calico
 [The network must be deployed before any applications. Also, CoreDNS will not start up before a network is installed. kubeadm only supports Container Network Interface (CNI) based networks (and does not support kubenet)](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network)  
 master节点执行如下命令，安装网络附件addon(必须先安装网络附件，不然coredns会一直处于Pending状态)  
+**安装Flannel**  
 ```
 kubectl apply -f kube-flannel-v0.14.yml
-#kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+# kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
-安装calico   
+**安装Calico**  
 ```
 kubectl apply -f calico.yaml
 ```
@@ -136,7 +218,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 This will remove the node-role.kubernetes.io/master taint from any nodes that have it, including the master node, meaning that the scheduler will then be able to schedule pods everywhere
 ## 6 worker node加入集群
-如果忘记了上面的 join 命令可以使用命令 kubeadm token create --print-join-command 重新获取。
+**如果忘记了上面的 join 命令可以使用命令 kubeadm token create --print-join-command 重新获取**
 ```
 kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>
 ```
@@ -169,35 +251,65 @@ master   Ready    control-plane,master   2d21h   v1.22.2   192.168.75.142   <non
 node1    Ready    <none>                 31m     v1.22.2   192.168.75.143   <none>        CentOS Linux 7 (Core)   3.10.0-1127.el7.x86_64   containerd://1.4.9
 ```
 
-## 7 Install helm and tiller
-See the [installation guide](https://github.com/cheferrari/k8s-env-setting-up/tree/master/helm) for more information.
+## 7 Install helm
+See the [Installing Helm](https://helm.sh/docs/intro/install/) for more information.
+```
+From the Binary Releases
+Every release of Helm provides binary releases for a variety of OSes. These binary versions can be manually downloaded and installed.
 
+Download your [desired version](https://github.com/helm/helm/releases)
+Unpack it (tar -zxvf helm-v3.0.0-linux-amd64.tar.gz)
+Find the helm binary in the unpacked directory, and move it to its desired destination (mv linux-amd64/helm /usr/local/bin/helm)
+```
 ## 8 Install Traefik
-See the [installation guide](https://github.com/cheferrari/k8s-env-setting-up/tree/master/traefik) for more information.
+See the [Install Traefik](https://doc.traefik.io/traefik/getting-started/install-traefik/) for more information.
+```
+Use the Helm Chart
+Warning
+
+The Traefik Chart from Helm's default charts repository is still using Traefik v1.7.
+
+Traefik can be installed in Kubernetes using the Helm chart from https://github.com/traefik/traefik-helm-chart.
+
+Ensure that the following requirements are met:
+
+Kubernetes 1.14+
+Helm version 3.x is installed
+Add Traefik's chart repository to Helm:
+
+
+helm repo add traefik https://helm.traefik.io/traefik
+You can update the chart repository by running:
+
+
+helm repo update
+And install it with the helm command line:
+
+
+helm install traefik traefik/traefik
+Helm Features
+
+All Helm features are supported. For instance, installing the chart in a dedicated namespace:
+
+
+Install in a Dedicated Namespace
+
+kubectl create ns traefik-v2
+# Install in the namespace "traefik-v2"
+helm install --namespace=traefik-v2 \
+    traefik traefik/traefik
+```
 
 ## 9 Install metrics-server
-```
-git clone https://github.com/kubernetes-incubator/metrics-server
-cd metrics-server/metrics-server/deploy/1.8+
-
-[root@k8s-node1 ~/metrics-server/deploy/1.8+]# ll
-total 28
--rw-r--r-- 1 root root 384 Jun 21 10:35 aggregated-metrics-reader.yaml
--rw-r--r-- 1 root root 308 Jun 21 10:35 auth-delegator.yaml
--rw-r--r-- 1 root root 329 Jun 21 10:35 auth-reader.yaml
--rw-r--r-- 1 root root 298 Jun 21 10:35 metrics-apiservice.yaml
--rw-r--r-- 1 root root 991 Jun 21 10:41 metrics-server-deployment.yaml
--rw-r--r-- 1 root root 291 Jun 21 10:35 metrics-server-service.yaml
--rw-r--r-- 1 root root 502 Jun 21 10:35 resource-reader.yaml
-```
-### 修改metrics-server-deployment.yaml 
+Reference: [Installation metrics-server](https://github.com/kubernetes-sigs/metrics-server#installation)
+### 修改components.yaml 
 - imagePullPolicy: IfNotPresent
-- 增加两个命令参数
+- 增加命令参数: --kubelet-insecure-tls
 ```
-# cat metrics-server-deployment.yaml
+# cat components.yaml
 ...
       - name: metrics-server
-        image: k8s.gcr.io/metrics-server-amd64:v0.3.6
+        image: docker.io/bitnami/metrics-server:0.5.0
         imagePullPolicy: IfNotPresent
         args:
         - --kubelet-insecure-tls
@@ -239,15 +351,13 @@ data:
 
 ### 拉镜像
 ```
-docker pull gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.6
-docker tag gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.6 k8s.gcr.io/metrics-server-amd64:v0.3.6
+ctr -n k8s.io i pull docker.io/bitnami/metrics-server:0.5.0
 ```
-
 ### 部署metrics-server
 ```
-kubectl apply -f 1.8+/
+kubectl apply -f components.yaml
 ```
-部署完成后过几分钟检查, API版本中出现 metrics.k8s.io/v1beta1, kubectl top命令可以正确输出即表明部署成功
+部署完成后检查, API版本中出现 metrics.k8s.io/v1beta1, kubectl top命令可以正确输出即表明部署成功
 ```
 # kubectl api-versions
 metrics.k8s.io/v1beta1
@@ -258,15 +368,19 @@ k8s-node1   238m         5%     806Mi           21%
 ```
 
 ## 10 使用小建议
-### 10.1 kubectl命令自动补全
+### 10.1 kubectl/kubeadm/helm命令自动补全
 [Kubectl Autocomplete](https://kubernetes.io/docs/reference/kubectl/cheatsheet/ "Kubectl Autocomplete")
 ```
+# kubectl 命令自动补全
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 source ~/.bashrc
-```
-```
-# kubeadm自动补全
+
+# kubeadm 自动补全
 echo "source <(kubeadm completion bash)" >> ~/.bashrc
+source ~/.bashrc
+
+# helm 命令自动补全
+echo "source <(helm completion bash)" >> ~/.bashrc
 source ~/.bashrc
 ```
 ### 10.2 安装kubens命令
