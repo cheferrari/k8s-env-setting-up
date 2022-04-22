@@ -2,11 +2,11 @@
 ![language](https://img.shields.io/badge/language-shell-orange.svg) ![Shellcheck](https://github.com/cheferrari/k8s-env-setting-up/workflows/Shellcheck/badge.svg)  
 k8s-env-setting-up is a shell script to initialize the kubernetes's machine environment.
 This script is suitable for centos7.6-7.8. 
-- OS: `Rocky Linux8.5`
+- OS: `Rocky Linux 8.5`
 - kubernetes: `v1.23.6`
 - containerd: `1.5.11`
-- network add-on: `calico v3.22.2`(可选)
-- kube-proxy mode: `ipvs` (可选)
+- network add-on: `calico v3.22.2`
+- kube-proxy mode: `ipvs`
 - coredns: `v1.8.6`
 - etcd: `3.5.1-0`
 - ingress: `traefik`
@@ -18,7 +18,6 @@ This script is suitable for centos7.6-7.8.
   - [环境准备](#环境准备)
   - [1 初始化系统环境](#1-初始化系统环境)
   - [2 下载镜像](#2-下载镜像)
-    - [【可选】下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下](#可选下载镜像前运行-kubeadm-config-images-list-获取所需镜像及版本信息如下)
   - [3 kubeadm 初始化 k8s 集群](#3-kubeadm-初始化-k8s-集群)
   - [4 安装网络附件flannel/calico](#4-安装网络附件flannelcalico)
   - [5 master节点可调度pod【可选】](#5-master节点可调度pod可选)
@@ -61,8 +60,8 @@ cd k8s-env-setting-up
 bash k8s-env-setting-up.sh
 ```
 ## 2 下载镜像
-### 【可选】下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下
 ```
+# 下载镜像前运行 kubeadm config images list 获取所需镜像及版本信息，如下
 [root@localhost ~]# kubeadm config images list
 k8s.gcr.io/kube-apiserver:v1.23.6
 k8s.gcr.io/kube-controller-manager:v1.23.6
