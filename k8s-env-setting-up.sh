@@ -2,7 +2,7 @@
 # 适用于CentOS7及以上，快速配置k8s机器所需环境
 
 # 设定k8s and version
-K8S_VERSION=1.22.2
+K8S_VERSION=1.23.6
 #DOCKER_VERSION=20.10.8
 
 # 系统及内核配置
@@ -80,12 +80,12 @@ modprobe overlay
 modprobe br_netfilter
 
 # 配置 CentOS Base 源
-mkdir -p /etc/yum.repos.d/base && mv /etc/yum.repos.d/* /etc/yum.repos.d/base
-curl -fsSL -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+# mkdir -p /etc/yum.repos.d/base && mv /etc/yum.repos.d/* /etc/yum.repos.d/base
+# curl -fsSL -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
 
 # 配置EPEL源，阿里云epel
 # wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
-curl -fsSL -o /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo
+# curl -fsSL -o /etc/yum.repos.d/epel.repo https://mirrors.aliyun.com/repo/epel-7.repo
 
 # 配置 docker-ce 源，阿里云
 curl -fsSL -o /etc/yum.repos.d/docker-ce.repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
@@ -103,10 +103,10 @@ gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors
 EOF
 
 # 生成缓存
-echo "y" | yum makecache fast
+echo "y" | yum makecache
 
 # 安装一些常用工具
-yum install -y yum-utils lrzsz bash-completion wget net-tools
+yum install -y lrzsz bash-completion wget net-tools
 # kube-proxy开启ipvs模式需要的软件包
 yum install -y ipvsadm ipset
 # 时间同步，-u参数可以越过防火墙与主机同步
@@ -131,13 +131,14 @@ yum install -y ipvsadm ipset
 #yum install -y containerd.io-1.2.13 docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION}
 #yum install -y docker-ce-${DOCKER_VERSION} docker-ce-cli-${DOCKER_VERSION} containerd.io
 
-yum install -y containerd.io
+yum install -y containerd.io-1.5.11
 
 containerd config default > /etc/containerd/config.toml
 # 替换containerd配置文件
 # sed -i "s#k8s.gcr.io#registry.aliyuncs.com/google_containers#g"  /etc/containerd/config.toml
-sed -i "s#k8s.gcr.io/pause:3.2#registry.aliyuncs.com/google_containers/pause:3.5#g"  /etc/containerd/config.toml
-sed -i '/containerd.runtimes.runc.options/a\ \ \ \ \ \ \ \ \ \ \ \ SystemdCgroup = true' /etc/containerd/config.toml
+sed -i "s#k8s.gcr.io/pause:3.5#registry.aliyuncs.com/google_containers/pause:3.6#g"  /etc/containerd/config.toml
+#sed -i '/containerd.runtimes.runc.options/a\ \ \ \ \ \ \ \ \ \ \ \ SystemdCgroup = true' /etc/containerd/config.toml
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
 #sed -i "s#https://registry-1.docker.io#https://registry.aliyuncs.com#g"  /etc/containerd/config.toml
 sed -i "s#https://registry-1.docker.io#https://bqr1dr1n.mirror.aliyuncs.com#g"  /etc/containerd/config.toml
 #sed -i "s#https://registry-1.docker.io#https://registry.aliyuncs.com#g"  /etc/containerd/config.toml
