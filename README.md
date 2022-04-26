@@ -196,16 +196,20 @@ kubeadm join 192.168.75.165:6443 --token e0bj9u.x0083tvpogchq5bt \
 ## 4 安装网络附件flannel/calico
 [The network must be deployed before any applications. Also, CoreDNS will not start up before a network is installed. kubeadm only supports Container Network Interface (CNI) based networks (and does not support kubenet)](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network)  
 master节点执行如下命令，安装网络附件addon(必须先安装网络附件，不然coredns会一直处于Pending状态)  
+**安装Flannel**  
+```
+kubectl apply -f kube-flannel.yml
+# kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+```
 **安装Calico**  
 ```
+# 注意：Rocky Linux 8 上安装calico之后pod网络有问题，因为rhel8系 使用nftables替代iptabels,导致iptables规则可能有问题
+# 参考：https://mihail-milev.medium.com/no-pod-to-pod-communication-on-centos-8-kubernetes-with-calico-56d694d2a6f4
+# https://github.com/projectcalico/calico/issues/2322
+# https://github.com/kubernetes/kubernetes/issues/97283
 curl https://projectcalico.docs.tigera.io/manifests/calico.yaml -O
 kubectl apply -f calico.yaml
 ```  
-**安装Flannel**  
-```
-kubectl apply -f kube-flannel-v0.14.yml
-# kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-```
 ## 5 master节点可调度pod【可选】
 ```
 kubectl taint nodes --all node-role.kubernetes.io/master-
