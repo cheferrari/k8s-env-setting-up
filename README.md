@@ -4,7 +4,7 @@ k8s-env-setting-up is a shell script to initialize the kubernetes's machine envi
 - OS: `Rocky Linux 8.5`
 - kubernetes: `v1.23.6`
 - containerd: `1.5.11`
-- network add-on: `calico v3.22.2`
+- network add-on: `flannel v0.17.0`
 - kube-proxy mode: `ipvs`
 - coredns: `v1.8.6`
 - etcd: `3.5.1-0`
